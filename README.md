@@ -4,16 +4,16 @@
 
 Inspired by PerformanceAnalytics and PortoflioAnalytics packages in R, PortfolioAnalytics.jl aims to provide users with functionality for performing portfolio analytics.
 
-This is a skeleton project now, but it is under heavy development. 
+PortfolioAnalytics.jl is minimal now, but it is under heavy development. 
 
-The following functions are currently implemented:
+The following functions are available:
 * Return()
 * PortfolioReturn()
 * SharpeRatio()
 * VaR()
 * PortfolioOptimize()
 
-On the pipe:
+**On the pipe:**
 * ExpectedShortfall()
 
 ### Contributions are most welcome
@@ -21,5 +21,5 @@ We greatly value contributions of any kind. Contributions could include but are 
 
 
 ### Bug reports
-Please report any issues via the Github issue tracker. All types of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
+Please report any issues via the GitHub issue tracker. All types of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
 
