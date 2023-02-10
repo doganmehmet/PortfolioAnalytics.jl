@@ -1,8 +1,8 @@
-# PortfolioAnalytics
+# PortfolioAnalytics.jl
 
 [![Build Status](https://github.com/doganmehmet/PortfolioAnalytics.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/doganmehmet/PortfolioAnalytics.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
-Inspired by PerformanceAnalytics and PortoflioAnalytics packages in R, PortfolioAnalytics.jl aims to provide users with functionality for performing portfolio analytics.
+Inspired by PerformanceAnalytics and PortoflioAnalytics packages in R, ***PortfolioAnalytics.jl*** aims to provide users with functionality for performing portfolio analytics.
 
 PortfolioAnalytics.jl is minimal now, but it is under heavy development. 
 
@@ -21,5 +21,5 @@ We greatly value contributions of any kind. Contributions could include but are 
 
 
 ### Bug reports
-Please report any issues via the GitHub issue tracker. All types of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
+Please report any issues via the GitHub issue tracker. All kinds of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
 
