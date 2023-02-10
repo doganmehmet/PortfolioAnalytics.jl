@@ -11,7 +11,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 TSFrames = "9f90e835-9451-4aaa-bcb1-743a1b8d2f84"
 
 [compat]
-julia = "1"
+julia = "1.8"
 Distributions ="0.25.80"
 Ipopt = "1.1.0"
 JuMP = "1.7.0"
