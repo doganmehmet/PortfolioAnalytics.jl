@@ -41,11 +41,11 @@ New functionalities will also be added to the existing functions.
 * PortfolioReturn()
     * ***Rebalancing*** will be added
 * VaR()
-    * VaR with Monte Carlo to be added
+    * ***VaR with Monte Carlo*** to be added
 * PortfolioOptimize()
     * ***Maximization by SharpeRatio*** will be added
-    * ***Custom constraints***
-    * ***NamedArray**
+    * ***Custom constraints*** functionality will be included.
+    * ***NamedArray*** to be added for weights.
 
 
 
