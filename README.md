@@ -12,7 +12,7 @@ julia> using Pkg
 julia> Pkg.add("PortfolioAnalytics")
 ```
 
-PortfolioAnalytics.jl is minimal now, but it is under heavy development. 
+PortfolioAnalytics.jl is minimal now, but it is **under heavy development**. 
 
 The following functions are available:
 * Return()
@@ -22,11 +22,16 @@ The following functions are available:
 * PortfolioOptimize()
 
 **On the pipe:**
+* MeanReturns()
+* Moments()
 * ExpectedShortfall()
 
 ### Known issues
 These are just a few examples of known issues with functions in the package. These issues will be fixed in the next release.
-
+* **All Functions:**
+    * Types (e.g., TSFrame, Vector{Float64}) still need to be specified. This hasn't been done on purpose. The best candidate looks TSFrame but I'm still open to suggestions. Nevertheless, **the types of parameters to be passed to the functions will be set in the next release.**
+* PortfolioReturn()
+    * **It returns a vector instead of a proper object with dates. This issue is connected to #1 (All Functions) and will be fixed in the next release.**
 * Sharpe Ratio()
     * Does not work in presense of NAs or missing vlaues. **Will be fixed in the next release.**
     * Needs to be passed single column only. if multiple columns are passed it will be calculaing one single SharpeRatio which is wrong. **Will be fixed in the next release.**
@@ -38,8 +43,11 @@ These are just a few examples of known issues with functions in the package. The
 
 ### TO DO
 New functionalities will also be added to the existing functions.
+* Return()
+    * ***period*** period parameter to be added for multi-period returns
 * PortfolioReturn()
-    * ***Rebalancing*** will be added
+    * ***Rebalancing*** parameter will be added
+    * ***period*** period parameter will be added for multi-period returns
 * VaR()
     * ***VaR with Monte Carlo*** to be added
 * PortfolioOptimize()
@@ -139,7 +147,7 @@ julia> preturns = PortfolioReturn(prices_ts, [0.4, 0.4, 0.2])
 
 #### SharpeRatio()
 ```julia
-julia> preturns_ts = TSFrame(preturns[2:end]) # transfering it to TSFrame otherwise SharpeRatio does not work. it will be fixed in the next release
+julia> preturns_ts = TSFrame(preturns[2:end]) # converting it to TSFrame otherwise SharpeRatio does not work. it will be fixed in the next release
 12×1 TSFrame with Int64 Index
  Index  x1
  Int64  Float64?
