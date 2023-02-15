@@ -31,7 +31,7 @@ These are just a few examples of known issues with functions in the package. The
 * **All Functions:**
     * Types (e.g., TSFrame, Vector{Float64}) still need to be specified. This hasn't been done on purpose. The best candidate looks TSFrame but I'm still open to suggestions. Nevertheless, **the types of parameters to be passed to the functions will be set in the next release.**
 * PortfolioReturn()
-    * **It returns a vector instead of a proper object with dates. This issue is connected to #1 (All Functions) and will be fixed in the next release.**
+    * It returns a vector instead of a proper object with dates. This issue is connected to #1 (All Functions) and **will be fixed in the next release.**
 * Sharpe Ratio()
     * Does not work in presense of NAs or missing vlaues. **Will be fixed in the next release.**
     * Needs to be passed single column only. if multiple columns are passed it will be calculaing one single SharpeRatio which is wrong. **Will be fixed in the next release.**
@@ -44,10 +44,10 @@ These are just a few examples of known issues with functions in the package. The
 ### TO DO
 New functionalities will also be added to the existing functions.
 * Return()
-    * ***period*** period parameter to be added for multi-period returns
+    * ***period*** parameter to be added for multi-period returns
 * PortfolioReturn()
     * ***Rebalancing*** parameter will be added
-    * ***period*** period parameter will be added for multi-period returns
+    * ***period*** parameter will be added for multi-period returns
 * VaR()
     * ***VaR with Monte Carlo*** to be added
 * PortfolioOptimize()
