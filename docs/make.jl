@@ -7,8 +7,7 @@ makedocs(
     modules = [PortfolioAnalytics],
     pages = [
         "Introduction" => "index.md",
-        "Guide" => "guide.md",
-        "Functions" => "functions.md"
+        "Guide" => "guide.md"
     ]
 )
 
@@ -16,7 +15,5 @@ makedocs(
 # See "Hosting Documentation" and deploydocs() in the Documenter manual
 # for more information.
 deploydocs(
-    repo = "github.com/doganmehmet/PortfolioAnalytics.jl.git",
-    devbranch="main",
-    target = "build"
+    repo = "github.com/doganmehmet/PortfolioAnalytics.jl.git"
 )

@@ -1,22 +1,19 @@
-"""Calculates the mean return from asset return
+"""
+    MeanReturn(R::TSFrame)
 
+Calculates the `mean return` from `asset returns`. Output is a `NamedArray`.
+
+# Example
+```julia
+julia> mreturn = MeanReturn(all_returns)
+4-element Named Vector{Float64}
+Mean Return  │
+─────────────┼───────────
+TSLA         │ -0.0688762
+NFLX         │  -0.034517
+MSFT         │ -0.0252167
+preturn      │ -0.0464006
 ```
-MeanReturn(returns)
-```
-
-Arguments:
-    R: column(s) of TSFrame object of asset returns
-
-Output:
-    - NamedArray
-Notes:
-    -
-
-Issues:
-    - Doesn't work in presense of NAs or missing values. Will be fixed in the next release
-    
-To do:
-    - 
 """
 function MeanReturn(R::TSFrame)
     mreturn = Statistics.mean.(eachcol(Matrix(R)))

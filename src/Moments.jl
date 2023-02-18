@@ -1,22 +1,25 @@
-"""Calculates the (statistical) moments of asset returns
+"""
+    Moments(R::TSFrame)
 
+Calculates the `(statistical) moments` of `asset returns`. Output is a `NamedArray`.
+
+# Examples
+```julia
+julia> pmoments = testModule.Moments(all_returns)
+4×4 Named Matrix{Float64}
+Rows ╲ Cols │       TSLA        NFLX        MSFT     preturn
+────────────┼───────────────────────────────────────────────
+Mean        │ -0.0688762   -0.034517  -0.0252167  -0.0464006
+Std         │   0.184973    0.209259    0.068932    0.141418
+Skewness    │   0.868756   -0.600014    0.724772    0.415989
+Kurtosis    │   0.529269    0.333629   -0.635292    0.415647
 ```
-Moments(R)
-```
 
-Arguments:
-    R: column(s) of TSFrame object of asset returns
+# Output:
+ * `NamedArray`; rows: `moments`, columns: `tickers`
 
-Output:
-    - NamedArray, rows: moments, columns: tickers
-Notes:
-    - Kurtosis: excess kurtosis
-
-Issues:
-    - Doesn't work in presense of NAs or missing values. Will be fixed in the next release
-    
-To do:
-    - 
+# Notes:
+ * `Kurtosis`: `excess kurtosis`
 """
 function Moments(R::TSFrame)
     
