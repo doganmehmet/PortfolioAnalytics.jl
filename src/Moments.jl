@@ -5,7 +5,7 @@ Calculates the `(statistical) moments` of `asset returns`. Output is a `NamedArr
 
 # Examples
 ```julia
-julia> pmoments = testModule.Moments(all_returns)
+julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
 Rows ╲ Cols │       TSLA        NFLX        MSFT     preturn
 ────────────┼───────────────────────────────────────────────
