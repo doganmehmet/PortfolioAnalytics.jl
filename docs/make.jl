@@ -1,5 +1,4 @@
-using Documenter
-using PortfolioAnalytics
+using Documenter, PortfolioAnalytics
 
 makedocs(
     sitename = "PortfolioAnalytics",

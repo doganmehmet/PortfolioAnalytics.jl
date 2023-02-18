@@ -19,7 +19,7 @@ using Test
 
     @test PortfolioAnalytics.SharpeRatio(ts) == 1.9817916066368684
 
-    @test PortfolioAnalytics.PortfolioOptimize(ts1) == (0.06068400223854823, 0.027399149546094046, [0.9532586654550509, 0.046741334544949005])
+    @test PortfolioAnalytics.PortfolioOptimize(ts1) == (0.06068400223854824, 0.02739914954609405, [0.953258665455051, 0.04674133454494899])
 
     @test PortfolioAnalytics.VaR(ts[:,1], 0.95, "historical") == 0.0273091465
     @test PortfolioAnalytics.VaR(ts[:,1], 0.95, "parametric") == 0.009301194810178992
