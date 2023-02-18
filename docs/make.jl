@@ -2,6 +2,7 @@ using Documenter, PortfolioAnalytics
 
 makedocs(
     sitename = "PortfolioAnalytics.jl",
+    authors = "Mehmet Dogan",
     format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "false"),
     modules = [PortfolioAnalytics],
     pages = [
