@@ -1,9 +1,14 @@
 using Documenter, PortfolioAnalytics
 
 makedocs(
-    sitename = "PortfolioAnalytics",
-    format = Documenter.HTML(),
-    modules = [PortfolioAnalytics]
+    sitename = "PortfolioAnalytics.jl",
+    format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "false"),
+    modules = [PortfolioAnalytics],
+    pages = [
+        "Introduction" => "index.md",
+        "Guide" => "guide.md",
+        "Functions" => "functions.md"
+    ]
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
