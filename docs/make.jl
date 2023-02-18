@@ -16,7 +16,7 @@ makedocs(
 # See "Hosting Documentation" and deploydocs() in the Documenter manual
 # for more information.
 deploydocs(
-    repo = "github.com/doganmehmet/PortfolioAnalytics.jl",
+    repo = "github.com/doganmehmet/PortfolioAnalytics.jl.git",
     devbranch="main",
     target = "build"
 )
