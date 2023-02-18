@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Guide · PortfolioAnalytics.jl</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="index.html">PortfolioAnalytics.jl</a></span></div><form class="docs-search" action="search.html"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="index.html">Introduction</a></li><li class="is-active"><a class="tocitem" href="guide.html">Guide</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li></ul></li><li><a class="tocitem" href="functions.html">Functions</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href="guide.html">Guide</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href="guide.html">Guide</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/doganmehmet/PortfolioAnalytics.jl/blob/main/docs/src/guide.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Guide"><a class="docs-heading-anchor" href="#Guide">Guide</a><a id="Guide-1"></a><a class="docs-heading-anchor-permalink" href="#Guide" title="Permalink"></a></h1><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><h3 id="Development-version-(Suggested)"><a class="docs-heading-anchor" href="#Development-version-(Suggested)">Development version (Suggested)</a><a id="Development-version-(Suggested)-1"></a><a class="docs-heading-anchor-permalink" href="#Development-version-(Suggested)" title="Permalink"></a></h3><pre><code class="language-julia hljs">julia&gt; using Pkg
+Pkg.add(url=&quot;https://github.com/doganmehmet/PortfolioAnalytics.jl&quot;)</code></pre><h3 id="Stable-version"><a class="docs-heading-anchor" href="#Stable-version">Stable version</a><a id="Stable-version-1"></a><a class="docs-heading-anchor-permalink" href="#Stable-version" title="Permalink"></a></h3><pre><code class="language-julia hljs">julia&gt; using Pkg
+julia&gt; Pkg.add(&quot;PortfolioAnalytics&quot;)</code></pre><h3 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h3><p><strong>Caution:</strong> The package is under heavy development, and the next version will differ from the current one. Installation of the dev version is suggested.</p><pre><code class="language-julia hljs">julia&gt; using DataFrames
+
+julia&gt; date = [&quot;2021-12-31&quot;,&quot;2022-01-31&quot;,&quot;2022-02-28&quot;,&quot;2022-03-31&quot;,&quot;2022-04-30&quot;,&quot;2022-05-31&quot;,&quot;2022-06-30&quot;,&quot;2022-07-31&quot;,&quot;2022-08-31&quot;,&quot;2022-09-30&quot;,&quot;2022-10-31&quot;,&quot;2022-11-30&quot;,&quot;2022-12-31&quot;]
+julia&gt; TSLA = [352.26,312.24,290.14,359.2,290.25,252.75,224.47,297.15,275.61,265.25,227.54,194.7,121.82]
+julia&gt; NFLX = [602.44,427.14,394.52,374.59,190.36,197.44,174.87,224.9,223.56,235.44,291.88,305.53,291.12]
+julia&gt; MSFT = [336.32,310.98,298.79,308.31,277.52,271.87,256.83,280.74,261.47,232.9,232.13,255.14,241.01]
+
+julia&gt; prices = DataFrame(date = date, TSLA = TSLA, NFLX = NFLX, MSFT = MSFT)
+julia&gt; prices.date = Date.(prices.date, &quot;yyyy-mm-dd&quot;)</code></pre><pre><code class="language-julia hljs">julia&gt; using TSFrames
+
+julia&gt; prices_ts = TSFrame(prices)
+13×3 TSFrame with Date Index
+ Index       TSLA     NFLX     MSFT
+ Date        Float64  Float64  Float64
+───────────────────────────────────────
+ 2021-12-31   352.26   602.44   336.32
+ 2022-01-31   312.24   427.14   310.98
+ 2022-02-28   290.14   394.52   298.79
+ 2022-03-31   359.2    374.59   308.31
+ 2022-04-30   290.25   190.36   277.52
+ 2022-05-31   252.75   197.44   271.87
+ 2022-06-30   224.47   174.87   256.83
+ 2022-07-31   297.15   224.9    280.74
+ 2022-08-31   275.61   223.56   261.47
+ 2022-09-30   265.25   235.44   232.9
+ 2022-10-31   227.54   291.88   232.13
+ 2022-11-30   194.7    305.53   255.14
+ 2022-12-31   121.82   291.12   241.01
+</code></pre><h4 id="Return()"><a class="docs-heading-anchor" href="#Return()">Return()</a><a id="Return()-1"></a><a class="docs-heading-anchor-permalink" href="#Return()" title="Permalink"></a></h4><pre><code class="language-julia hljs">julia&gt; returns = Return(prices_ts)
+13×3 TSFrame with Date Index
+ Index       TSLA             NFLX             MSFT
+ Date        Float64?         Float64?         Float64?
+────────────────────────────────────────────────────────────────
+ 2021-12-31  missing          missing          missing
+ 2022-01-31       -0.113609        -0.290983        -0.0753449
+ 2022-02-28       -0.0707789       -0.0763684       -0.0391987
+ 2022-03-31        0.238023        -0.0505171        0.0318618
+ 2022-04-30       -0.191954        -0.491818        -0.099867
+ 2022-05-31       -0.129199         0.0371927       -0.0203589
+ 2022-06-30       -0.111889        -0.114313        -0.0553206
+ 2022-07-31        0.323785         0.286098         0.0930966
+ 2022-08-31       -0.0724886       -0.0059582       -0.06864
+ 2022-09-30       -0.0375893        0.0531401       -0.109267
+ 2022-10-31       -0.142168         0.239721        -0.00330614
+ 2022-11-30       -0.144326         0.0467658        0.0991255
+ 2022-12-31       -0.374319        -0.0471639       -0.0553814
+</code></pre><h4 id="PortfolioReturn()"><a class="docs-heading-anchor" href="#PortfolioReturn()">PortfolioReturn()</a><a id="PortfolioReturn()-1"></a><a class="docs-heading-anchor-permalink" href="#PortfolioReturn()" title="Permalink"></a></h4><pre><code class="language-julia hljs">julia&gt; preturns = PortfolioReturn(prices_ts, [0.4, 0.4, 0.2])
+13-element Vector{Union{Missing, Float64}}:
+   missing
+ -0.17690602205121858
+ -0.0666986491934299
+  0.08137474427977387
+ -0.29348222886964276
+ -0.040874290158098486
+ -0.10154508259254014
+  0.262572584168498
+ -0.0451067428577845
+ -0.015633067758222274
+  0.03836021460141191
+ -0.019199093251286613
+ -0.17966963603703354</code></pre><h4 id="SharpeRatio()"><a class="docs-heading-anchor" href="#SharpeRatio()">SharpeRatio()</a><a id="SharpeRatio()-1"></a><a class="docs-heading-anchor-permalink" href="#SharpeRatio()" title="Permalink"></a></h4><pre><code class="language-julia hljs">julia&gt; preturns_ts = TSFrame(preturns[2:end]) # converting it to TSFrame otherwise SharpeRatio does not work. it will be fixed in the next release
+12×1 TSFrame with Int64 Index
+ Index  x1
+ Int64  Float64?
+───────────────────
+     1  -0.176906
+     2  -0.0666986
+     3   0.0813747
+     4  -0.293482
+     5  -0.0408743
+     6  -0.101545
+     7   0.262573
+     8  -0.0451067
+     9  -0.0156331
+    10   0.0383602
+    11  -0.0191991
+    12  -0.17967
+
+julia&gt; SharpeRatio(preturns_ts)
+-0.3281102588233226</code></pre><h4 id="Var()"><a class="docs-heading-anchor" href="#Var()">Var()</a><a id="Var()-1"></a><a class="docs-heading-anchor-permalink" href="#Var()" title="Permalink"></a></h4><pre><code class="language-julia hljs">&quot;&quot;&quot;
+Arguments:
+    - R: a vector, column of TSFrame, or column of DataFrame object of asset returns
+    - p: confidence interval
+    - method: default = &quot;historical&quot;, available methods: &quot;historical&quot; and &quot;parametric&quot; 
+&quot;&quot;&quot;
+
+# historical
+julia&gt; VaR(preturns_ts[:,1], 0.95, &quot;historical&quot;)
+-0.23088530281170763
+
+# parametric
+julia&gt; VaR(preturns_ts[:,1], 0.95, &quot;parametric&quot;)
+-0.27901206097437814</code></pre><h4 id="PortfolioOptimize()"><a class="docs-heading-anchor" href="#PortfolioOptimize()">PortfolioOptimize()</a><a id="PortfolioOptimize()-1"></a><a class="docs-heading-anchor-permalink" href="#PortfolioOptimize()" title="Permalink"></a></h4><pre><code class="language-julia hljs">
+&quot;&quot;&quot;
+Arguments:
+    R: columns of TSFrame, or columns of DataFrame object of asset returns
+
+Output:
+    - is a 3-element tupple
+        - first element is portfolio mean return
+        - second is portfolio variance
+        - third is optimal weights
+&quot;&quot;&quot;
+
+julia&gt; PortfolioOptimize(returns[2:13])
+
+EXIT: Optimal Solution Found.
+(-0.025216712326596998, 0.06893199595428622, [1.4616864319901446e-7, 5.319947696629003e-8, 0.9999998006318798])</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Introduction</a><a class="docs-footer-nextpage" href="functions.html">Functions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Saturday 18 February 2023 16:33">Saturday 18 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
