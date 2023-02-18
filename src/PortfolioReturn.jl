@@ -1,19 +1,33 @@
-# Function for portfolio return
-# pctchange functions is from TSFrames
-# It only accepts TSFrame type from TSFrames.jl package 
-# At the moment there is no rebalancing options
+""" Calculates portfolio return
 
-# To be done:
-    # Rebalancing to be added
+```
+preturns = PortfolioReturn(prices_ts, [0.4, 0.4, 0.2])
+```
 
-# Arguments
-    # R: column(s) of TSFrame object of asset returns
-    # weights: weights of assets
+Arguments:
+    - price: column(s) of TSFrame object of asset prices
+    - weights: weights of assets of type Vector{Float64}
+    - period: Period, Int
 
-function PortfolioReturn(data, weights)
+Output:
+    - TSFrame object, missing period is automatically removed
 
+Notes:
+    -
+
+Issues:
+    -
+
+To do:
+    - Rebalancing to be added
+"""
+function PortfolioReturn(price::TSFrame, weights::Vector{Float64}, period::Int = 1)
     
-    return Matrix(pctchange(data)) * weights
+    preturns = Matrix(TSFrames.pctchange(price, period)) * weights
+
+    ts = TSFrame(preturns, TSFrames.index(price))[(period+1):end]
+    TSFrames.rename!(ts, ["preturn"])
     
+    return ts
 
 end

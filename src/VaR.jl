@@ -1,28 +1,38 @@
-# Calculates Value-at-Risk(VaR)
-# Methods include "historical" and "parametric"
+"""Calculates Value-at-Risk(VaR)
 
-# To be done:
-    # Monte Carlo to be implemented
+Arguments:
+    - R: column(s) of TSFrame object
+    - p: confidence interval, Number
+    - method: method of VaR calculation, default = "historical", available methods: "historical" and "parametric", String
 
-# Issues
-    # It cannot run on multiple columns but working on implementation
+Output:
+    - NamedArray
 
-# Arguments
-    #  R: a vector, column of TSFrame, or column of DataFrame object of asset returns
-    #  p: confidence interval
-    #  method: default = "historical" or "parametric"
-function VaR(R, p=0.95, method = "historical")
+Notes:
+    - 
+
+Issues:
+    - Does not work in presense of NAs or missing vlaues. Will be fixed in the next release.
+
+To do:
+    - VaR with Monte Carlo to be implemented
+
+"""
+function VaR(R::TSFrame, p::Number = 0.95, method::String = "historical")
 
     alpha = 1 - p
 
     if method == "parametric"
-
-        VAR = mean(R) - (std(R) * Distributions.quantile(Normal(), p)) 
+        VAR = mean.(eachcol(Matrix(R))) - (std.(eachcol(Matrix(R))) .* Distributions.quantile(Normal(), p)) 
     else
-        VAR = quantile(R, alpha)
-
+        VAR = Distributions.quantile.(eachcol(Matrix(R)), alpha) 
     end
 
-    return VAR
+    colnames = names(R) # used only for naming array
+    conf = Int(100*p) # used only for naming array
+    
+    
+    return NamedArray(VAR, colnames, "$conf% VaR")
 
 end
+

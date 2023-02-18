@@ -1,17 +1,30 @@
-# Calculates the optimal Portfolio weights for minumum-variance portfolio
-# Output is a tupple
-    # first element is mean portfolio return
-    # second is portfolio variance
-    # third is optimal weights
-    
-# Minimizes the portfolio variance
-# To me implemented:
-    # Maximize SharpeRatio
-    # Custom constraints
+"""
+Calculates the optimal Portfolio weights for minumum-variance portfolio
 
-# Arguments
-    #  R: columns of TSFrame, or columns of DataFrame object of asset returns
-function PortfolioOptimize(R)
+```
+PortfolioOptimize(returns[2:13])
+```
+
+Arguments:
+    R: columns of TSFrame object of asset returns
+
+Output:
+    - Named Tuple
+        - 1, preturn : portfolio mean return
+        - 2, pvar: portfolio variable
+        - 3, pweights: optimal portfolio weights for minumum variance portfolio
+Notes:
+    -
+
+Issues:
+    - Doesn't work in presense of NAs or missing values. Will be fixed in the next release
+    
+To do:
+    - Maximize SharpeRatio
+    - Custom constraints
+    - NamedArray to be used for weights
+"""
+function PortfolioOptimize(R::TSFrame)
 
     means = mean.(eachcol(Matrix(R)))
     covMatrix = cov(Matrix(R))
@@ -31,7 +44,11 @@ function PortfolioOptimize(R)
     
     weights = value.(w)
     
-    mreturn = weights' * means
+    pmreturn = weights' * means
 
-    return mreturn, pvar, weights
+    colnames = names(R) # used only for naming array
+    weights = NamedArray(weights, colnames, "Optimal Weights")
+
+
+    return pmreturn, pvar, weights
 end

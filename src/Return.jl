@@ -1,14 +1,26 @@
-# Function for return calculations
-# pctchange functions is from TSFrames
-# It only accepts TSFrame type from TSFrames.jl package
-# This does not calculate the portfolio return. 
-# Portfolio return is calcuated by PortfolioReturn function.
+"""
+    Return(price::TSFrame, period::Int=1)
+    
+Calculates `returns` form asset `prices`
 
-# Arguments
-    # price: column(s) of TSFrame object of asset prices
+Arguments:
+    - price: column(s) of TSFrame object of asset prices
+    - period: period, Int
 
-function Return(price)
+Output:
+    - TSFrame object, missing period is automatically removed
 
-    return pctchange(price)
+Notes:
+    - This function does not calculate the portfolio return. Portfolio return is calcuated by PortfolioReturn function.
+
+Issues:
+    -
+
+To do:
+    - 
+"""
+function Return(price::TSFrame, period::Int=1)
+
+    return TSFrames.pctchange(price, period)[(period+1):end]
 
 end
