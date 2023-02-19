@@ -38,6 +38,9 @@ Named Tuple
   * 1, `preturn` : portfolio mean return
   * 2, `pvar`: portfolio variable
   * 3, `pweights`: optimal portfolio weights for minumum variance portfolio
+
+# Notes:
+Custom constraints will be added in the next release.
 """
 function PortfolioOptimize(R::TSFrame)
 
