@@ -1,14 +1,14 @@
 """
     Return(price::TSFrame, period::Int=1)
     
-Calculates `returns` form asset `prices`
+Calculates `returns` form `asset prices`.
 
 # Arguments:
  * `price::TSFrame`: column(s) of TSFrame object of asset prices
  * `period::Int=1`: return period
 
 
-# Examples
+# Example
 ```julia
  julia> Return(prices_ts)
  12×3 TSFrame with Date Index

@@ -6,7 +6,7 @@
 
 Inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, ***PortfolioAnalytics.jl*** aims to provide users with functionality for performing portfolio analytics.
 
-#### Documentation
+### Documentation
 Vist the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/guide.html#Installation) for more examples and functionality.
 
 
@@ -14,12 +14,18 @@ Vist the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/Portfo
 #### Development version (Suggested)
 ```julia
 julia> using Pkg
-Pkg.add(url="https://github.com/doganmehmet/PortfolioAnalytics.jl")
+julia> Pkg.add(url="https://github.com/doganmehmet/PortfolioAnalytics.jl")
 ```
 #### Stable version
 ```julia
 julia> using Pkg
 julia> Pkg.add("PortfolioAnalytics")
+```
+
+#### Update version
+```julia
+julia> using Pkg
+julia> Pkg.update("PortfolioAnalytics")
 ```
 
 PortfolioAnalytics.jl is minimal now, but it is **under heavy development**. 
@@ -31,10 +37,10 @@ The following functions are available in stable version:
 * VaR()
 * PortfolioOptimize()
 
-**On the pipe:**
-* MeanReturns() - available in dev version
-* Moments() - - available in dev version
-* ExpectedShortfall()
+Additonal functions available in dev version:
+* MeanReturns()
+* Moments()
+* ExpectedShortfall() - available soon
 
 ### Known issues
 These are just a few examples of known issues with functions in the package. These issues will be fixed in the next release.
@@ -89,8 +95,6 @@ MSFT = [336.32,310.98,298.79,308.31,277.52,271.87,256.83,280.74,261.47,232.9,232
 
 prices_ts = TSFrame([TSLA NFLX MSFT], dates, colnames=[:TSLA, :NFLX, :MSFT])
 
-weights = [0.4, 0.4, 0.2]
-
 13×3 TSFrame with Date Index
  Index       TSLA     NFLX     MSFT    
  Date        Float64  Float64  Float64 
@@ -108,6 +112,12 @@ weights = [0.4, 0.4, 0.2]
  2022-10-31   227.54   291.88   232.13
  2022-11-30   194.7    305.53   255.14
  2022-12-31   121.82   291.12   241.01
+
+weights = [0.4, 0.4, 0.2]
+3-element Vector{Float64}:
+ 0.4
+ 0.4
+ 0.2
 ```
 
 ### Return()
@@ -156,7 +166,7 @@ You can join TSFrame objects with ***join()*** function from TSFrames package.
 ```julia
 julia> all_returns = TSFrames.join(returns, preturns)
 12×4 TSFrame with Date Index
- Index       TSLA        NFLX        MSFT         preturn    
+ Index       TSLA        NFLX        MSFT         PRETURN    
  Date        Float64?    Float64?    Float64?     Float64?   
 ─────────────────────────────────────────────────────────────
  2022-01-31  -0.113609   -0.290983   -0.0753449   -0.176906
@@ -182,7 +192,7 @@ Sharpe  │
 TSLA    │ -0.372359
 NFLX    │ -0.164948
 MSFT    │  -0.36582
-preturn │  -0.32811
+PRETURN │  -0.32811
 ```
 
 ### MeanReturn()
@@ -194,7 +204,7 @@ Mean Return  │
 TSLA         │ -0.0688762
 NFLX         │  -0.034517
 MSFT         │ -0.0252167
-preturn      │ -0.0464006
+PRETURN      │ -0.0464006
 ```
 
 ```julia
@@ -207,7 +217,7 @@ julia> bar(names(mreturn), mreturn, labels = false)
 ```julia
 julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
-Rows ╲ Cols │       TSLA        NFLX        MSFT     preturn
+Rows ╲ Cols │       TSLA        NFLX        MSFT     PRETURN
 ────────────┼───────────────────────────────────────────────
 Mean        │ -0.0688762   -0.034517  -0.0252167  -0.0464006
 Std         │   0.184973    0.209259    0.068932    0.141418
@@ -224,7 +234,7 @@ julia> var_historical = VaR(all_returns)
 TSLA     │ -0.274019
 NFLX     │ -0.381359
 MSFT     │ -0.104097
-preturn  │ -0.230885
+PRETURN  │ -0.230885
 
 julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
 4-element Named Vector{Float64}
@@ -233,7 +243,7 @@ julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
 TSLA     │ -0.305928
 NFLX     │ -0.302693
 MSFT     │ -0.113557
-preturn  │ -0.227635
+PRETURN  │ -0.227635
 ```
 
 ### PortfolioOptimize()

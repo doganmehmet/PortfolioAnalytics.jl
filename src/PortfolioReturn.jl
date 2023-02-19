@@ -1,18 +1,19 @@
 """
-    PortfolioReturn(price::TSFrame, weights::Vector{Float64}, period::Int = 1)
+    PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=1, colname::String="PRETURN")
 
 Calculates `portfolio return` from `asset prices` and given `weights`.
 
 # Arguments:
  * `price::TSFrame`: column(s) of TSFrame object of asset prices
- * `weights::Vector{Float64}`: weights of assets
- * `period::Int = 1`: return period
+ * `weights::Vector{<:Number}`: weights of assets
+ * `period::Int=1`: return period
+ * `colname::String="PRETURN"`: name of the column of portfolio return
 
-# Examples
+# Example
 ```julia
 julia> preturns = PortfolioReturn(prices_ts, weights)
 12×1 TSFrame with Date Index
- Index       preturn    
+ Index       PRETURN    
  Date        Float64?   
 ────────────────────────
  2022-01-31  -0.176906
@@ -30,14 +31,14 @@ julia> preturns = PortfolioReturn(prices_ts, weights)
 ```
 
 # Notes:
- * `missing` resulting from the function is automatically removed
+ * `missing` resulting from the function is automatically removed.
 """
-function PortfolioReturn(price::TSFrame, weights::Vector{Float64}, period::Int = 1)
+function PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=1, colname::String="PRETURN")
     
     preturns = Matrix(TSFrames.pctchange(price, period)) * weights
 
     ts = TSFrame(preturns, TSFrames.index(price))[(period+1):end]
-    TSFrames.rename!(ts, ["preturn"])
+    TSFrames.rename!(ts, [colname])
     
     return ts
 

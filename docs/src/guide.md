@@ -5,7 +5,7 @@
 #### Development version (Suggested)
 ```julia
 julia> using Pkg
-Pkg.add(url="https://github.com/doganmehmet/PortfolioAnalytics.jl")
+julia> Pkg.add(url="https://github.com/doganmehmet/PortfolioAnalytics.jl")
 ```
 
 #### Stable version
@@ -14,7 +14,13 @@ julia> using Pkg
 julia> Pkg.add("PortfolioAnalytics")
 ```
 
-**Caution:** The package is under heavy development, and this documentation refers to the development verison. Development version will significantly differ from the current stable version. Installation of the dev version is suggested.
+#### Update version
+```julia
+julia> using Pkg
+julia> Pkg.update("PortfolioAnalytics")
+```
+
+**Caution:** The package is under heavy development, and this documentation refers to the development version which will significantly differ from the current stable version. Installation of the dev version is suggested.
 
 ## Functions
 
@@ -65,7 +71,7 @@ PortfolioReturn
 ```julia
 julia> all_returns = TSFrames.join(returns, preturns)
 12×4 TSFrame with Date Index
- Index       TSLA        NFLX        MSFT         preturn    
+ Index       TSLA        NFLX        MSFT         PRETURN    
  Date        Float64?    Float64?    Float64?     Float64?   
 ─────────────────────────────────────────────────────────────
  2022-01-31  -0.113609   -0.290983   -0.0753449   -0.176906

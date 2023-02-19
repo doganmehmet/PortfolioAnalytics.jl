@@ -1,28 +1,34 @@
 using PortfolioAnalytics
 using Test
 
+
 @testset "PortfolioAnalytics.jl" begin
     # Write your tests here.
-
-    bond = [0.06276629, 0.03958098, 0.08456482,0.02759821,0.09584956,0.06363253,0.02874502,0.02707264,0.08776449,0.02950032]
-    stock = [0.1759782,0.20386651,0.21993588,0.3090001,0.17365969,0.10465274,0.07888138,0.13220847,0.28409742,0.14343067]
     
     using TSFrames
-    using Statistics
-    
-    ts = TSFrame(bond)
-    @test PortfolioAnalytics.Return(ts)[2:10] ==  pctchange(ts)[2:10]
 
-    ts1 = TSFrame([bond stock])
+    TSLA = [352.26,312.24,290.14,359.2,290.25,252.75,224.47,297.15,275.61,265.25,227.54,194.7,121.82];
+    NFLX = [602.44,427.14,394.52,374.59,190.36,197.44,174.87,224.9,223.56,235.44,291.88,305.53,291.12];
+    MSFT = [336.32,310.98,298.79,308.31,277.52,271.87,256.83,280.74,261.47,232.9,232.13,255.14,241.01]; 
 
-    @test PortfolioAnalytics.PortfolioReturn(ts1, [0.5, 0.5])[2:10] ==  (Matrix(pctchange(ts1))*[0.5, 0.5])[2:10]
+    prices_ts = TSFrame([TSLA NFLX MSFT], colnames=[:TSLA, :NFLX, :MSFT])
 
-    @test PortfolioAnalytics.SharpeRatio(ts) == 1.9817916066368684
+    weights = [0.4, 0.4, 0.2]
 
-    @test PortfolioAnalytics.PortfolioOptimize(ts1) == (0.06068400223854824, 0.02739914954609405, [0.953258665455051, 0.04674133454494899])
+    @test round(PortfolioAnalytics.Return(prices_ts,1)[1,1], digits = 4) ==  -0.1136
 
-    @test PortfolioAnalytics.VaR(ts[:,1], 0.95, "historical") == 0.0273091465
-    @test PortfolioAnalytics.VaR(ts[:,1], 0.95, "parametric") == 0.009301194810178992
+    @test round(PortfolioAnalytics.PortfolioReturn(prices_ts, weights)[1,1], digits = 4) ==  -0.1769
+
+    @test round(PortfolioAnalytics.VaR(prices_ts)["TSLA"], digits = 4) == 165.548
+    @test round(PortfolioAnalytics.VaR(prices_ts, p=0.9, method = "parametric")["TSLA"], digits = 4) == 183.8988
+
+    @test round(PortfolioAnalytics.SharpeRatio(prices_ts)["TSLA"], digits = 4) == 4.1377
+
+    @test round(PortfolioAnalytics.MeanReturn(prices_ts)["TSLA"], digits=4) == 266.4138
+    @test round(PortfolioAnalytics.Moments(prices_ts)["Mean","TSLA"], digits = 4) == 266.4138
+
+    @test round(PortfolioAnalytics.PortfolioOptimize(prices_ts).pvar, digits=4) == 32.2015
+
 
 
 end

@@ -1,12 +1,12 @@
 """
-    VaR(R::TSFrame; p::Number = 0.95, method::String = "historical")
+    VaR(R::TSFrame; p::Number=0.95, method::String="historical")
 
 Calculates `Value-at-Risk(VaR)` from `asset returns`. Output is a `NamedArray`.
 
 # Arguments:
  * `R::TSFrame`: column(s) of TSFrame object
- * `p::Number = 0.95`: confidence interval
- * `method::String = "historical"`: method of VaR calculation
+ * `p::Number=0.95`: confidence interval
+ * `method::String="historical"`: method of VaR calculation
 
 # Example
 ```julia
@@ -17,7 +17,7 @@ julia> var_historical = VaR(all_returns)
 TSLA     │ -0.274019
 NFLX     │ -0.381359
 MSFT     │ -0.104097
-preturn  │ -0.230885
+PRETURN  │ -0.230885
 
 julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
 4-element Named Vector{Float64}
@@ -26,14 +26,14 @@ julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
 TSLA     │ -0.305928
 NFLX     │ -0.302693
 MSFT     │ -0.113557
-preturn  │ -0.227635
+PRETURN  │ -0.227635
 ```
 
 # Notes:
  * Available methods: `"historical"` and `"parametric"`
  * Monte Carlo method will be implemented as part of the next release
 """
-function VaR(R::TSFrame; p::Number = 0.95, method::String = "historical")
+function VaR(R::TSFrame; p::Number=0.95, method::String="historical")
 
     alpha = 1 - p
 

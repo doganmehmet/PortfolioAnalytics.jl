@@ -12,7 +12,7 @@ Mean Return  │
 TSLA         │ -0.0688762
 NFLX         │  -0.034517
 MSFT         │ -0.0252167
-preturn      │ -0.0464006
+PRETURN      │ -0.0464006
 ```
 """
 function MeanReturn(R::TSFrame)

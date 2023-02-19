@@ -4,7 +4,7 @@
 Calculates the `optimal Portfolio weights` for `minumum-variance portfolio`.
 
 # Arguments:
- *` R::TSFrame`: columns of TSFrame object of asset returns
+ * `R::TSFrame`: columns of TSFrame object of asset returns
 
 # Example
 ```julia
@@ -34,8 +34,8 @@ MSFT             │        1.0
 ```
 
 # Output:
- * Named Tuple
-  * 1, `pmreturn` : portfolio mean return
+Named Tuple
+  * 1, `preturn` : portfolio mean return
   * 2, `pvar`: portfolio variable
   * 3, `pweights`: optimal portfolio weights for minumum variance portfolio
 """

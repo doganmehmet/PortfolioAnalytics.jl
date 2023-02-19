@@ -3,11 +3,11 @@
 
 Calculates the `(statistical) moments` of `asset returns`. Output is a `NamedArray`.
 
-# Examples
+# Example
 ```julia
 julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
-Rows ╲ Cols │       TSLA        NFLX        MSFT     preturn
+Rows ╲ Cols │       TSLA        NFLX        MSFT     PRETURN
 ────────────┼───────────────────────────────────────────────
 Mean        │ -0.0688762   -0.034517  -0.0252167  -0.0464006
 Std         │   0.184973    0.209259    0.068932    0.141418
