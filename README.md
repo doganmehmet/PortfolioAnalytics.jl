@@ -1,13 +1,15 @@
 # PortfolioAnalytics.jl
 
 [![Build Status](https://github.com/doganmehmet/PortfolioAnalytics.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/doganmehmet/PortfolioAnalytics.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://doganmehmet.github.io/PortfolioAnalytics.jl/stable)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev)
 
 ## Tool for Quantitative Portfolio Analytics
 
 Inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, ***PortfolioAnalytics.jl*** aims to provide users with functionality for performing portfolio analytics.
 
 ### Documentation
-Vist the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) for more examples and functionality.
+Visit the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) for more examples and functionality.
 
 
 ### Installing PortfolioAnalytics
