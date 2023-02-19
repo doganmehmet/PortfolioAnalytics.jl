@@ -7,7 +7,7 @@
 Inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, ***PortfolioAnalytics.jl*** aims to provide users with functionality for performing portfolio analytics.
 
 ### Documentation
-Vist the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/guide.html#Installation) for more examples and functionality.
+Vist the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) for more examples and functionality.
 
 
 ### Installing PortfolioAnalytics
