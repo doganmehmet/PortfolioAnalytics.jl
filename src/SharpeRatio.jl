@@ -5,7 +5,7 @@ Calculates `Sharpe Ratio` from `asset returns`. Output is a `NamedArray`.
 
 # Arguments:
  * `R::TSFrame`: column(s) of TSFrame object of asset returns
- * `Rf::Number=0`: Risk free rate
+ * `Rf::Number=0`: Risk-free rate
 
 # Example
 ```julia

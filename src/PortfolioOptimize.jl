@@ -108,7 +108,7 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
         
         @objective(model, Max, [expected_return, sharpe])
         if target != Nothing
-            @constraint(model, expected_return >= target) # or
+            @constraint(model, expected_return >= target)
         end
     else
         throw(ArgumentError("one of the available objective must be chosen"))
