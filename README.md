@@ -9,7 +9,40 @@
 The **PortfolioAnalytics.jl** aims to provide users with functionality for performing quantitative portfolio analytics. The package is under heavy development, and new functionalities will be added as part of ongoing releases.
 
 ### Getting started
-To get started with **PortfolioAnalytics.jl** head on to the [documentation](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/).
+Read the [documentation](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) to get started with **PortfolioAnalytics.jl**.
+
+The following functions are available in the stable version:
+* Return( )
+* PortfolioReturn( )
+* SharpeRatio( )
+* VaR( )
+* PortfolioOptimize( )
+* MeanReturns( )
+* StdDev( )
+* Moments( )
+* ExpectedShortfall( )
+
+#### What's new in v0.2.0?
+* **input object types** are specified for all functions
+* Most of the functions work now in the presense of `missing` values, but you're encouraged to *"Know Your Data"*
+* **period** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
+* **maximum-sharpe** portfolio optimization and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
+* **NamedArray**'s are added for functions where possible 
+* **SharpeRatio( )** now returns a proper NamedArray
+* **VaR( )** accepts multiple columns
+
+
+### Contributions are most welcome
+We greatly value contributions of any kind. Contributions could include but are not limited to documentation improvements, bug reports, new or improved code, scientific and technical code reviews, infrastructure improvements, mailing lists, chat participation, community help/building, education, and outreach.
+
+### Bug reports
+Please report any issues via the GitHub issue tracker. All kinds of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
+
+### Acknowledgement
+The package is inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R and *pyfolio* in Python.
+
+## User Guide
+The package is under development, and the dev version may differ from the stable version.
 
 ### Installing PortfolioAnalytics
 #### Development version
@@ -29,40 +62,7 @@ julia> using Pkg
 julia> Pkg.update("PortfolioAnalytics")
 ```
 
-The following functions are available in stable version:
-* Return( )
-* PortfolioReturn( )
-* SharpeRatio( )
-* VaR( )
-* PortfolioOptimize( )
-* MeanReturns( )
-* StdDev( )
-* Moments( )
-* ExpectedShortfall( )
-
-What's new in **v0.2.0**?
-* **input object types** are specified for all functions
-* Most of the functions work now in presense of `missing` values but you're encouraged to *"Know Your Data"*
-* **period** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
-* **maximum sharpe** portfolio optimizaiton and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
-* **NamedArray**'s are addeded for functions where possible 
-* **SharpeRatio( )** now returns a proper NamedArray
-* **VaR( )** accepts multiple columns
-
-
-### Contributions are most welcome
-We greatly value contributions of any kind. Contributions could include but are not limited to documentation improvements, bug reports, new or improved code, scientific and technical code reviews, infrastructure improvements, mailing lists, chat participation, community help/building, education, and outreach.
-
-### Bug reports
-Please report any issues via the GitHub issue tracker. All kinds of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
-
-### Acknowledgement
-The package is inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, and *pyfolio* in Python.
-
-## User Guide
-The package is under development and dev version may be different than the stable version.
-
-
+### Examples
 ```julia
 using PortfolioAnalytics
 using Dates
