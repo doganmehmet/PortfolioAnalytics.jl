@@ -6,14 +6,13 @@
 
 ## Tool for Quantitative Portfolio Analytics
 
-Inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, ***PortfolioAnalytics.jl*** aims to provide users with functionality for performing portfolio analytics.
+The **PortfolioAnalytics.jl** aims to provide users with functionality for performing quantitative portfolio analytics. The package is under heavy development, and new functionalities will be added as part of ongoing releases.
 
-### Documentation
-Visit the PortfolioAnalytics.jl [user guide](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) for more examples and functionality.
-
+### Getting started
+To get started with **PortfolioAnalytics.jl** head on to the [documentation](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/).
 
 ### Installing PortfolioAnalytics
-#### Development version (Suggested)
+#### Development version
 ```julia
 julia> using Pkg
 julia> Pkg.add(url="https://github.com/doganmehmet/PortfolioAnalytics.jl")
@@ -30,59 +29,38 @@ julia> using Pkg
 julia> Pkg.update("PortfolioAnalytics")
 ```
 
-PortfolioAnalytics.jl is minimal now, but it is **under heavy development**. 
-
 The following functions are available in stable version:
-* Return()
-* PortfolioReturn()
-* SharpeRatio()
-* VaR()
-* PortfolioOptimize()
+* Return( )
+* PortfolioReturn( )
+* SharpeRatio( )
+* VaR( )
+* PortfolioOptimize( )
+* MeanReturns( )
+* StdDev( )
+* Moments( )
+* ExpectedShortfall( )
 
-Additonal functions available in dev version:
-* MeanReturns()
-* Moments()
-* ExpectedShortfall() - available soon
-
-### Known issues
-These are just a few examples of known issues with functions in the package. These issues will be fixed in the next release.
-* **All Functions:**
-    * Types (e.g., TSFrame, Vector{Float64}) still need to be specified. This hasn't been done on purpose. The best candidate looks TSFrame but I'm still open to suggestions. Nevertheless, **the types of parameters to be passed to the functions will be set in the next release.** - adressed in dev version
-* PortfolioReturn()
-    * It returns a vector instead of a proper object with dates. This issue is connected to #1 (All Functions) and **will be fixed in the next release.** - fixed in dev version
-* Sharpe Ratio()
-    * Does not work in presense of NAs or missing vlaues. **Will be fixed in the next release.**
-    * Needs to be passed single column only. if multiple columns are passed it will be calculaing one single SharpeRatio which is wrong. **Will be fixed in the next release.**  - fixed in dev version
-* VaR()
-    * It cannot run on multiple columns. **Will be fixed in the next release.**  - fixed in dev version
-    * Does not work in presense of NAs or missing vlaues. **Will be fixed in the next release.**
-* PortfolioOptimize()
-    * Doesn't work in presense of NAs or missing values. **Will be fixed in the next release.**
-
-### TO DO
-New functionalities will also be added to the existing functions.
-* Return()
-    * ***period*** parameter to be added for multi-period returns - available in dev version
-* PortfolioReturn()
-    * ***Rebalancing*** parameter will be added
-    * ***period*** parameter will be added for multi-period returns - available in dev version
-* VaR()
-    * ***VaR with Monte Carlo*** to be added
-* PortfolioOptimize()
-    * ***Maximization by SharpeRatio*** will be added
-    * ***Custom constraints*** functionality will be included.
-    * ***NamedArray*** to be added for weights. - available in dev version
+What's new in **v0.2.0**?
+* **input object types** are specified for all functions
+* Most of the functions work now in presense of `missing` values but you're encouraged to *"Know Your Data"*
+* **period** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
+* **maximum sharpe** portfolio optimizaiton and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
+* **NamedArray**'s are addeded for functions where possible 
+* **SharpeRatio( )** now returns a proper NamedArray
+* **VaR( )** accepts multiple columns
 
 
 ### Contributions are most welcome
 We greatly value contributions of any kind. Contributions could include but are not limited to documentation improvements, bug reports, new or improved code, scientific and technical code reviews, infrastructure improvements, mailing lists, chat participation, community help/building, education, and outreach.
 
-
 ### Bug reports
 Please report any issues via the GitHub issue tracker. All kinds of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
 
+### Acknowledgement
+The package is inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R, and *pyfolio* in Python.
+
 ## User Guide
-This guide refers to development version. Installation of the dev version is suggested.
+The package is under development and dev version may be different than the stable version.
 
 
 ```julia
@@ -90,10 +68,10 @@ using PortfolioAnalytics
 using Dates
 using TSFrames
 
-dates = Date(2021, 12, 31):Month(1):Date(2022, 12, 31)
-TSLA = [352.26,312.24,290.14,359.2,290.25,252.75,224.47,297.15,275.61,265.25,227.54,194.7,121.82]
-NFLX = [602.44,427.14,394.52,374.59,190.36,197.44,174.87,224.9,223.56,235.44,291.88,305.53,291.12]
-MSFT = [336.32,310.98,298.79,308.31,277.52,271.87,256.83,280.74,261.47,232.9,232.13,255.14,241.01]
+dates = Date(2020, 12, 31):Month(1):Date(2021, 12, 31)
+TSLA = [235.22,264.51,225.16,222.64,236.48,208.40,226.56,229.06,245.24,258.49,371.33,381.58,352.26]
+NFLX = [540.73,532.39,538.85,521.66,513.47,502.81,528.21,517.57,569.19,610.34,690.31,641.90,602.44]
+MSFT = [222.42,231.96,232.38,235.77,252.18,249.68,270.90,284.91,301.88,281.92,331.62,330.59,336.32]
 
 prices_ts = TSFrame([TSLA NFLX MSFT], dates, colnames=[:TSLA, :NFLX, :MSFT])
 
@@ -101,19 +79,19 @@ prices_ts = TSFrame([TSLA NFLX MSFT], dates, colnames=[:TSLA, :NFLX, :MSFT])
  Index       TSLA     NFLX     MSFT    
  Date        Float64  Float64  Float64 
 ───────────────────────────────────────
- 2021-12-31   352.26   602.44   336.32 
- 2022-01-31   312.24   427.14   310.98 
- 2022-02-28   290.14   394.52   298.79 
- 2022-03-31   359.2    374.59   308.31 
- 2022-04-30   290.25   190.36   277.52 
- 2022-05-31   252.75   197.44   271.87 
- 2022-06-30   224.47   174.87   256.83
- 2022-07-31   297.15   224.9    280.74
- 2022-08-31   275.61   223.56   261.47
- 2022-09-30   265.25   235.44   232.9
- 2022-10-31   227.54   291.88   232.13
- 2022-11-30   194.7    305.53   255.14
- 2022-12-31   121.82   291.12   241.01
+ 2020-12-31   235.22   540.73   222.42 
+ 2021-01-31   264.51   532.39   231.96 
+ 2021-02-28   225.16   538.85   232.38 
+ 2021-03-31   222.64   521.66   235.77 
+ 2021-04-30   236.48   513.47   252.18 
+ 2021-05-31   208.4    502.81   249.68 
+ 2021-06-30   226.56   528.21   270.9  
+ 2021-07-31   229.06   517.57   284.91 
+ 2021-08-31   245.24   569.19   301.88 
+ 2021-09-30   258.49   610.34   281.92 
+ 2021-10-31   371.33   690.31   331.62
+ 2021-11-30   381.58   641.9    330.59
+ 2021-12-31   352.26   602.44   336.32
 
 weights = [0.4, 0.4, 0.2]
 3-element Vector{Float64}:
@@ -124,159 +102,233 @@ weights = [0.4, 0.4, 0.2]
 
 ### Return()
 ```julia
- julia> Return(prices_ts)
- 12×3 TSFrame with Date Index
+julia> returns = Return(prices_ts)
+12×3 TSFrame with Date Index
  Index       TSLA        NFLX        MSFT        
  Date        Float64?    Float64?    Float64?    
 ─────────────────────────────────────────────────
- 2022-01-31  -0.113609   -0.290983   -0.0753449
- 2022-02-28  -0.0707789  -0.0763684  -0.0391987
- 2022-03-31   0.238023   -0.0505171   0.0318618
- 2022-04-30  -0.191954   -0.491818   -0.099867
- 2022-05-31  -0.129199    0.0371927  -0.0203589
- 2022-06-30  -0.111889   -0.114313   -0.0553206
- 2022-07-31   0.323785    0.286098    0.0930966
- 2022-08-31  -0.0724886  -0.0059582  -0.06864
- 2022-09-30  -0.0375893   0.0531401  -0.109267
- 2022-10-31  -0.142168    0.239721   -0.00330614
- 2022-11-30  -0.144326    0.0467658   0.0991255
- 2022-12-31  -0.374319   -0.0471639  -0.0553814
+ 2021-01-31   0.124522   -0.0154236   0.0428918
+ 2021-02-28  -0.148766    0.012134    0.00181066
+ 2021-03-31  -0.011192   -0.0319013   0.0145882
+ 2021-04-30   0.0621631  -0.0156999   0.0696017
+ 2021-05-31  -0.118742   -0.0207607  -0.00991355
+ 2021-06-30   0.0871401   0.0505161   0.0849888
+ 2021-07-31   0.0110346  -0.0201435   0.0517165
+ 2021-08-31   0.0706365   0.0997353   0.0595627
+ 2021-09-30   0.0540287   0.0722957  -0.066119
+ 2021-10-31   0.436535    0.131025    0.176291
+ 2021-11-30   0.0276035  -0.0701279  -0.00310596
+ 2021-12-31  -0.0768384  -0.0614737   0.0173326
+
+julia> log_returns = Return(prices_ts, method = "log")
+12×3 TSFrame with Date Index
+ Index       TSLA        NFLX        MSFT        
+ Date        Float64?    Float64?    Float64?    
+─────────────────────────────────────────────────
+ 2021-01-31   0.117358   -0.0155438   0.0419975
+ 2021-02-28  -0.161068    0.0120609   0.00180902
+ 2021-03-31  -0.0112551  -0.0324212   0.0144828
+ 2021-04-30   0.0603075  -0.0158244   0.0672864
+ 2021-05-31  -0.126404   -0.0209792  -0.00996302
+ 2021-06-30   0.0835505   0.0492816   0.0815697
+ 2021-07-31   0.0109742  -0.0203492   0.0504236
+ 2021-08-31   0.0682533   0.0950695   0.0578562
+ 2021-09-30   0.0526197   0.0698019  -0.0684062
+ 2021-10-31   0.362234    0.123125    0.162366
+ 2021-11-30   0.0272294  -0.0727082  -0.0031108
+ 2021-12-31  -0.079951   -0.0634445   0.0171842
 ```
 
 ### PortfolioReturn()
 ```julia
 julia> preturns = PortfolioReturn(prices_ts, weights)
 12×1 TSFrame with Date Index
- Index       preturn    
- Date        Float64?   
-────────────────────────
- 2022-01-31  -0.176906
- 2022-02-28  -0.0666986
- 2022-03-31   0.0813747
- 2022-04-30  -0.293482
- 2022-05-31  -0.0408743
- 2022-06-30  -0.101545
- 2022-07-31   0.262573
- 2022-08-31  -0.0451067
- 2022-09-30  -0.0156331
- 2022-10-31   0.0383602
- 2022-11-30  -0.0191991
- 2022-12-31  -0.17967
+ Index       PORT        
+ Date        Float64?    
+─────────────────────────
+ 2021-01-31   0.0522176
+ 2021-02-28  -0.0542905
+ 2021-03-31  -0.0143197
+ 2021-04-30   0.0325056
+ 2021-05-31  -0.0577836
+ 2021-06-30   0.0720602
+ 2021-07-31   0.00669974
+ 2021-08-31   0.0800613
+ 2021-09-30   0.037306
+ 2021-10-31   0.262282
+ 2021-11-30  -0.017631
+ 2021-12-31  -0.0518583
+
+ julia> log_preturns = PortfolioReturn(prices_ts, weights, method = "log")
+ 12×1 TSFrame with Date Index
+  Index       PORT        
+  Date        Float64?    
+ ─────────────────────────
+  2021-01-31   0.0491251
+  2021-02-28  -0.0592409
+  2021-03-31  -0.014574
+  2021-04-30   0.0312505
+  2021-05-31  -0.060946
+  2021-06-30   0.0694468
+  2021-07-31   0.00633473
+  2021-08-31   0.0769004
+  2021-09-30   0.0352874
+  2021-10-31   0.226617
+  2021-11-30  -0.0188137
+  2021-12-31  -0.0539213
 ```
 
-You can join TSFrame objects with ***join()*** function from TSFrames package.
+You can join TSFrame objects with ***join()*** function from *TSFrames* package.
 ```julia
 julia> all_returns = TSFrames.join(returns, preturns)
 12×4 TSFrame with Date Index
- Index       TSLA        NFLX        MSFT         PRETURN    
- Date        Float64?    Float64?    Float64?     Float64?   
-─────────────────────────────────────────────────────────────
- 2022-01-31  -0.113609   -0.290983   -0.0753449   -0.176906
- 2022-02-28  -0.0707789  -0.0763684  -0.0391987   -0.0666986
- 2022-03-31   0.238023   -0.0505171   0.0318618    0.0813747
- 2022-04-30  -0.191954   -0.491818   -0.099867    -0.293482
- 2022-05-31  -0.129199    0.0371927  -0.0203589   -0.0408743
- 2022-06-30  -0.111889   -0.114313   -0.0553206   -0.101545
- 2022-07-31   0.323785    0.286098    0.0930966    0.262573
- 2022-08-31  -0.0724886  -0.0059582  -0.06864     -0.0451067
- 2022-09-30  -0.0375893   0.0531401  -0.109267    -0.0156331
- 2022-10-31  -0.142168    0.239721   -0.00330614   0.0383602
- 2022-11-30  -0.144326    0.0467658   0.0991255   -0.0191991
- 2022-12-31  -0.374319   -0.0471639  -0.0553814   -0.17967
+ Index       TSLA        NFLX        MSFT         PORT        
+ Date        Float64?    Float64?    Float64?     Float64?    
+──────────────────────────────────────────────────────────────
+ 2021-01-31   0.124522   -0.0154236   0.0428918    0.0522176
+ 2021-02-28  -0.148766    0.012134    0.00181066  -0.0542905
+ 2021-03-31  -0.011192   -0.0319013   0.0145882   -0.0143197
+ 2021-04-30   0.0621631  -0.0156999   0.0696017    0.0325056
+ 2021-05-31  -0.118742   -0.0207607  -0.00991355  -0.0577836
+ 2021-06-30   0.0871401   0.0505161   0.0849888    0.0720602
+ 2021-07-31   0.0110346  -0.0201435   0.0517165    0.00669974
+ 2021-08-31   0.0706365   0.0997353   0.0595627    0.0800613
+ 2021-09-30   0.0540287   0.0722957  -0.066119     0.037306
+ 2021-10-31   0.436535    0.131025    0.176291     0.262282
+ 2021-11-30   0.0276035  -0.0701279  -0.00310596  -0.017631
+ 2021-12-31  -0.0768384  -0.0614737   0.0173326   -0.0518583
 ```
 
 ### SharpeRatio()
 ```julia
-ulia> sharpe = SharpeRatio(all_returns)
+julia> sharpe = SharpeRatio(all_returns)
 4-element Named Vector{Float64}
-Sharpe  │ 
-────────┼──────────
-TSLA    │ -0.372359
-NFLX    │ -0.164948
-MSFT    │  -0.36582
-PRETURN │  -0.32811
+Sharpe Ratio (Rf=0)  │
+─────────────────────┼─────────
+TSLA                 │ 0.288602
+NFLX                 │ 0.170242
+MSFT                 │ 0.606824
+PORT                 │ 0.329079
 ```
 
 ### MeanReturn()
 ```julia
 julia> mreturn = MeanReturn(all_returns)
 4-element Named Vector{Float64}
-Mean Return  │
-─────────────┼───────────
-TSLA         │ -0.0688762
-NFLX         │  -0.034517
-MSFT         │ -0.0252167
-PRETURN      │ -0.0464006
+μ    │
+─────┼──────────
+TSLA │ 0.0431772
+NFLX │  0.010848
+MSFT │ 0.0366371
+PORT │ 0.0289375
+
+
+julia> MeanReturn(all_returns, geometric=true)
+4-element Named Vector{Float64}
+μ    │
+─────┼───────────
+TSLA │  0.0342267
+NFLX │ 0.00904634
+MSFT │  0.0350585
+PORT │  0.0257348
 ```
 
-```julia
-julia> using Plots
-# plotting mean return of stocks and portfolio
-julia> bar(names(mreturn), mreturn, labels = false)
-```
+### StdDev()
+julia> StdDev(all_returns)
+4-element Named Vector{Float64}
+σ    │
+─────┼──────────
+TSLA │  0.149608
+NFLX │ 0.0637211
+MSFT │ 0.0603753
+PORT │ 0.0879347
 
 ### Moments()
 ```julia
 julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
-Rows ╲ Cols │       TSLA        NFLX        MSFT     PRETURN
-────────────┼───────────────────────────────────────────────
-Mean        │ -0.0688762   -0.034517  -0.0252167  -0.0464006
-Std         │   0.184973    0.209259    0.068932    0.141418
-Skewness    │   0.868756   -0.600014    0.724772    0.415989
-Kurtosis    │   0.529269    0.333629   -0.635292    0.415647
+Tickers ╲ Moments │      Mean        Std   Skewness   Kurtosis
+──────────────────┼───────────────────────────────────────────
+TSLA              │ 0.0431772   0.149608    1.36882    2.19682
+NFLX              │  0.010848  0.0637211   0.604374  -0.808401
+MSFT              │ 0.0366371  0.0603753   0.681468   0.790701
+PORT              │ 0.0289375  0.0879347    1.53379    2.19321
 ```
 
 ### VaR()
 ```julia
 julia> var_historical = VaR(all_returns)
 4-element Named Vector{Float64}
-95% VaR  │ 
-─────────┼──────────
-TSLA     │ -0.274019
-NFLX     │ -0.381359
-MSFT     │ -0.104097
-PRETURN  │ -0.230885
+95% historical VaR  │
+────────────────────┼───────────
+TSLA                │  -0.132252
+NFLX                │ -0.0653681
+MSFT                │  -0.035206
+PORT                │ -0.0558624
 
-julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
+
+julia> var_parametric = VaR(all_returns, 0.90, method = "parametric")
 4-element Named Vector{Float64}
-90% VaR  │
-─────────┼──────────
-TSLA     │ -0.305928
-NFLX     │ -0.302693
-MSFT     │ -0.113557
-PRETURN  │ -0.227635
+90% parametric VaR  │
+────────────────────┼───────────
+TSLA                │  -0.148553
+NFLX                │ -0.0708139
+MSFT                │ -0.0407369
+PORT                │ -0.0837553
+```
+
+### ExpectedShortfall()
+```julia
+julia> ES = ExpectedShortfall(all_returns)
+4-element Named Vector{Any}
+95% historical ES  │
+───────────────────┼───────────
+TSLA               │  -0.148766
+NFLX               │ -0.0701279
+MSFT               │  -0.066119
+PORT               │ -0.0577836
 ```
 
 ### PortfolioOptimize()
 ```julia
-julia> opt = PortfolioOptimize(returns)
+julia> opt1 = PortfolioOptimize(returns, "minumum variance")
 
-EXIT: Optimal Solution Found.
-(preturn = -0.025216712326596998, pvar = 0.06893199595428622, pweights = 3-element Named Vector{Float64}
-Optimal Weights  │
-─────────────────┼───────────
-TSLA             │ 1.46169e-7
-NFLX             │ 5.31995e-8
-MSFT             │        1.0)
-
-julia> portreturn = opt.preturn # or opt[1]
--0.025216712326596998
-
-julia> portvar = opt.pvar # or opt[2]
-0.06893199595428622
-
-julia> portweights = opt.pweights # or opt[3]
+julia> opt_weights = opt1.pweights
 3-element Named Vector{Float64}
 Optimal Weights  │
-─────────────────┼───────────
-TSLA             │ 1.46169e-7
-NFLX             │ 5.31995e-8
-MSFT             │        1.0
-```
+─────────────────┼───────
+TSLA             │   -0.0
+NFLX             │ 0.4438
+MSFT             │ 0.5562
 
+# plotting efficient frontier and decision space
+julia> opt1.plt
+
+# Optimize minumum-variance portfolio with a minumum return target of 4%
+julia> opt2 = PortfolioOptimize(returns, "minumum variance", target = 0.04)
+
+# optimal portfolio weights for a chosen objective and target return
+julia> opt2.pweights
+3-element Named Vector{Float64}
+Optimal Weights  │
+─────────────────┼───────
+TSLA             │ 0.5142
+NFLX             │    0.0
+MSFT             │ 0.4858
+
+# Maximum-Sharpe portfolios
 ```julia
-julia> using Plots
-# plotting optimal weights for minumum variance portfolio
-julia> bar(names(portweights), portweights, labels = false)
+julia> opt3 = PortfolioOptimize(returns, "maximum sharpe")
+
+# Optimal weights for maximum-sharpe portfolio 
+julia> opt3.pweights
+3-element Named Vector{Float64}
+Optimal Weights  │
+─────────────────┼─────
+TSLA             │ -0.0
+NFLX             │  0.0
+MSFT             │  1.0
+
+# Plot the efficient frontier and decision space
+julia> opt3.plt
 ```
