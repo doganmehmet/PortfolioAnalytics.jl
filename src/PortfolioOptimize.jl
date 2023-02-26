@@ -73,7 +73,7 @@ Named Tuple
   * 4, `pweights`: optimal portfolio weights for chosen `objective` and defined `target`
   * 5, `plt`: plot of the `efficient frontier` and `decision space`
   * 6, `pm`: list of `expected returns` per each solution
-  * 7, `po`: list of values per each solution for a chosen objective, list of standard deviations if `minumum variance` is chosen as objective, list of `sharpe ratios` if `maximum sharpe` is chosen.
+  * 7, `po`: list of objective values per portfolio. If the objective is `minimum-variance`, then standard deviations of each optimal portfolio. If the objective is set to the `maximum-sharpe`, then the Sharpe Ratios of each portfolio.
   * 8, `pw`: list of `weights` per each solution
 """
 function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0)

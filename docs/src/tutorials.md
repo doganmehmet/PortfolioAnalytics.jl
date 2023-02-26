@@ -46,7 +46,7 @@ ylabel!("Price")
 ```
 
 !!! warning
-    **PortfolioAnalytics** encourages you to **"Know Your Data"**. Some functions may not work in presense of `missing` and `NA` values.
+    **PortfolioAnalytics** encourages you to **"Know Your Data"**. Some functions may not work in presence of `missing` and `NA` values.
 
 !!! tip
     There is no `dropmissing` function for a `TSFrame` object. However, you can convert your data to `DataFrame`, drop `missing` values, and convert it back to a `TSFrame` object.
