@@ -318,7 +318,6 @@ NFLX             │    0.0
 MSFT             │ 0.4858
 
 # Maximum-Sharpe portfolios
-```julia
 julia> opt3 = PortfolioOptimize(returns, "maximum sharpe")
 
 # Optimal weights for maximum-sharpe portfolio 
