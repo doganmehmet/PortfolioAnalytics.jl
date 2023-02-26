@@ -24,9 +24,9 @@ The following functions are available in the stable version:
 
 #### What's new in v0.2.0?
 * **input object types** are specified for all functions
-* Most of the functions work now in the presense of `missing` values, but you're encouraged to *"Know Your Data"*
-* **period** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
-* **maximum-sharpe** portfolio optimization and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
+* Most of the functions now work in the presense of `missing` values, but you're encouraged to *"Know Your Data"*
+* **"period"** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
+* **"maximum-sharpe"** portfolio optimization and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
 * **NamedArray**'s are added for functions where possible 
 * **SharpeRatio( )** now returns a proper NamedArray
 * **VaR( )** accepts multiple columns
@@ -39,7 +39,7 @@ We greatly value contributions of any kind. Contributions could include but are 
 Please report any issues via the GitHub issue tracker. All kinds of issues are welcome and encouraged; this includes bug reports, documentation typos, feature requests, etc.
 
 ### Acknowledgement
-The package is inspired by *PerformanceAnalytics* and *PortoflioAnalytics* packages in R and *pyfolio* in Python.
+The package is inspired by *PerformanceAnalytics* and *PortfolioAnalytics* packages in R and *pyfolio* in Python.
 
 ## User Guide
 The package is under development, and the dev version may differ from the stable version.
@@ -100,7 +100,7 @@ weights = [0.4, 0.4, 0.2]
  0.2
 ```
 
-### Return()
+### Return( )
 ```julia
 julia> returns = Return(prices_ts)
 12×3 TSFrame with Date Index
@@ -139,7 +139,7 @@ julia> log_returns = Return(prices_ts, method = "log")
  2021-12-31  -0.079951   -0.0634445   0.0171842
 ```
 
-### PortfolioReturn()
+### PortfolioReturn( )
 ```julia
 julia> preturns = PortfolioReturn(prices_ts, weights)
 12×1 TSFrame with Date Index
@@ -178,7 +178,7 @@ julia> preturns = PortfolioReturn(prices_ts, weights)
   2021-12-31  -0.0539213
 ```
 
-You can join TSFrame objects with ***join()*** function from *TSFrames* package.
+You can join TSFrame objects with ***join( )*** function from *TSFrames* package.
 ```julia
 julia> all_returns = TSFrames.join(returns, preturns)
 12×4 TSFrame with Date Index
@@ -199,7 +199,7 @@ julia> all_returns = TSFrames.join(returns, preturns)
  2021-12-31  -0.0768384  -0.0614737   0.0173326   -0.0518583
 ```
 
-### SharpeRatio()
+### SharpeRatio( )
 ```julia
 julia> sharpe = SharpeRatio(all_returns)
 4-element Named Vector{Float64}
@@ -211,7 +211,7 @@ MSFT                 │ 0.606824
 PORT                 │ 0.329079
 ```
 
-### MeanReturn()
+### MeanReturn( )
 ```julia
 julia> mreturn = MeanReturn(all_returns)
 4-element Named Vector{Float64}
@@ -233,7 +233,7 @@ MSFT │  0.0350585
 PORT │  0.0257348
 ```
 
-### StdDev()
+### StdDev( )
 julia> StdDev(all_returns)
 4-element Named Vector{Float64}
 σ    │
@@ -243,7 +243,7 @@ NFLX │ 0.0637211
 MSFT │ 0.0603753
 PORT │ 0.0879347
 
-### Moments()
+### Moments( )
 ```julia
 julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
@@ -255,7 +255,7 @@ MSFT              │ 0.0366371  0.0603753   0.681468   0.790701
 PORT              │ 0.0289375  0.0879347    1.53379    2.19321
 ```
 
-### VaR()
+### VaR( )
 ```julia
 julia> var_historical = VaR(all_returns)
 4-element Named Vector{Float64}
@@ -277,7 +277,7 @@ MSFT                │ -0.0407369
 PORT                │ -0.0837553
 ```
 
-### ExpectedShortfall()
+### ExpectedShortfall( )
 ```julia
 julia> ES = ExpectedShortfall(all_returns)
 4-element Named Vector{Any}
@@ -289,7 +289,7 @@ MSFT               │  -0.066119
 PORT               │ -0.0577836
 ```
 
-### PortfolioOptimize()
+### PortfolioOptimize( )
 ```julia
 julia> opt1 = PortfolioOptimize(returns, "minumum variance")
 
