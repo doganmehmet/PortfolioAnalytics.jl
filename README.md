@@ -31,12 +31,12 @@ Please report any issues via the GitHub issue tracker. All kinds of issues are w
 ### Acknowledgement
 The package is inspired by *PerformanceAnalytics* and *PortfolioAnalytics* packages in R and *pyfolio* in Python.
 
-#### What's new in v0.2.0?
+### What's new in v0.2.0?
 * **input object types** are specified for all functions
 * Most of the functions now work in the presense of `missing` values, but you're encouraged to *"Know Your Data"*
 * **"period"** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
 * **"maximum-sharpe"** portfolio optimization and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
-* **NamedArray**'s are added for functions where possible 
+* **NamedArray**'s are added for functions where makes sense 
 * **SharpeRatio( )** now returns a proper NamedArray
 * **VaR( )** accepts multiple columns
 
@@ -55,7 +55,7 @@ julia> using Pkg
 julia> Pkg.add("PortfolioAnalytics")
 ```
 
-#### Update version
+#### Update the currently installed version
 ```julia
 julia> using Pkg
 julia> Pkg.update("PortfolioAnalytics")

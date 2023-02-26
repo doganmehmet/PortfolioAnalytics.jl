@@ -7,7 +7,9 @@ makedocs(
     modules = [PortfolioAnalytics],
     pages = [
         "Introduction" => "index.md",
-        "Guide" => "guide.md"
+        "Installation" => "installation.md",
+        "Tutorials" => "tutorials.md",
+        "Functions" => "functions.md" 
     ]
 )
 

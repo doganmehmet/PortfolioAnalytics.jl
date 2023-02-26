@@ -1,53 +1,57 @@
 """
-    VaR(R::TSFrame; p::Number=0.95, method::String="historical")
+    VaR(R::TSFrame, p::Number=0.95; method::String="historical")
 
 Calculates `Value-at-Risk(VaR)` from `asset returns`. Output is a `NamedArray`.
 
 # Arguments:
- * `R::TSFrame`: column(s) of TSFrame object
- * `p::Number=0.95`: confidence interval
- * `method::String="historical"`: method of VaR calculation
+ * `R::TSFrame`: column(s) of TSFrame object of asset returns
+ * `p::Number=0.95`: confidence level
+ * `method::String="historical"`: method of VaR calculation, available methods; `"historical"` and `"parametric"`
 
 # Example
 ```julia
 julia> var_historical = VaR(all_returns)
 4-element Named Vector{Float64}
-95% VaR  │ 
-─────────┼──────────
-TSLA     │ -0.274019
-NFLX     │ -0.381359
-MSFT     │ -0.104097
-PRETURN  │ -0.230885
+95% historical VaR  │
+────────────────────┼───────────
+TSLA                │  -0.132252
+NFLX                │ -0.0653681
+MSFT                │  -0.035206
+PORT                │ -0.0558624
 
-julia> var_parametric = VaR(all_returns, p = 0.90, method = "parametric")
+julia> var_parametric = VaR(all_returns, 0.90, method = "parametric")
 4-element Named Vector{Float64}
-90% VaR  │
-─────────┼──────────
-TSLA     │ -0.305928
-NFLX     │ -0.302693
-MSFT     │ -0.113557
-PRETURN  │ -0.227635
+90% parametric VaR  │
+────────────────────┼───────────
+TSLA                │  -0.148553
+NFLX                │ -0.0708139
+MSFT                │ -0.0407369
+PORT                │ -0.0837553
 ```
-
-# Notes:
- * Available methods: `"historical"` and `"parametric"`
- * Monte Carlo method will be implemented as part of the next release
 """
-function VaR(R::TSFrame; p::Number=0.95, method::String="historical")
+function VaR(R::TSFrame, p::Number=0.95; method::String="historical")
+    
+    colnames = names(R)
+    R = Matrix(R)
+
+    if any(ismissing.(R))
+        @warn("missing's detected: skipping missing's")
+    end
 
     alpha = 1 - p
 
-    if method == "parametric"
-        VAR = mean.(eachcol(Matrix(R))) - (std.(eachcol(Matrix(R))) .* Distributions.quantile(Normal(), p)) 
+    if method == "historical"
+        VAR = Distributions.quantile.(skipmissing.(eachcol(R)), alpha)
+    elseif method == "parametric"
+        VAR = mean.(skipmissing.(eachcol(R))) - (std.(skipmissing.(eachcol(R))) .* Distributions.quantile(Normal(), p))
     else
-        VAR = Distributions.quantile.(eachcol(Matrix(R)), alpha) 
+        throw(ArgumentError("one of the available method must be chosen"))
     end
-
-    colnames = names(R) # used only for naming array
-    conf = Int(100*p) # used only for naming array
     
+    conf = Int(100*p)
     
-    return NamedArray(VAR, colnames, "$conf% VaR")
+    return NamedArray(VAR, colnames, "$conf% $method VaR")
 
 end
+
 

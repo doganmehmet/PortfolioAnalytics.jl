@@ -7,28 +7,34 @@ Calculates the `(statistical) moments` of `asset returns`. Output is a `NamedArr
 ```julia
 julia> pmoments = Moments(all_returns)
 4×4 Named Matrix{Float64}
-Rows ╲ Cols │       TSLA        NFLX        MSFT     PRETURN
-────────────┼───────────────────────────────────────────────
-Mean        │ -0.0688762   -0.034517  -0.0252167  -0.0464006
-Std         │   0.184973    0.209259    0.068932    0.141418
-Skewness    │   0.868756   -0.600014    0.724772    0.415989
-Kurtosis    │   0.529269    0.333629   -0.635292    0.415647
+Tickers ╲ Moments │      Mean        Std   Skewness   Kurtosis
+──────────────────┼───────────────────────────────────────────
+TSLA              │ 0.0431772   0.149608    1.36882    2.19682
+NFLX              │  0.010848  0.0637211   0.604374  -0.808401
+MSFT              │ 0.0366371  0.0603753   0.681468   0.790701
+PORT              │ 0.0289375  0.0879347    1.53379    2.19321
 ```
 
 # Output:
- * `NamedArray`; rows: `moments`, columns: `tickers`
+ * `NamedArray`; rows: `tickers`, columns: `moments`
 
 # Notes:
  * `Kurtosis`: `excess kurtosis`
 """
 function Moments(R::TSFrame)
     
-    Mean = Statistics.mean.(eachcol(Matrix(R)))
-    StdDev = Statistics.std.(eachcol(Matrix(R)))
-    skew = Distributions.skewness.(eachcol(Matrix{Float64}(Matrix(R))))
-    kurt = Distributions.kurtosis.(eachcol(Matrix{Float64}(Matrix(R))))
-
     colnames = names(R)
+    R = Matrix(R)
+
+    if any(ismissing.(R))
+        @warn("missing's detected: skipping missing's")
+    end
+
+    Mean = Statistics.mean.(skipmissing.(eachcol(R)))
+    StdDev = Statistics.std.(skipmissing.(eachcol(R)))
+    skew = Distributions.skewness.(Vector{Float64}.(filter.(!ismissing, eachcol(R))))
+    kurt = Distributions.kurtosis.(Vector{Float64}.(filter.(!ismissing, eachcol(R))))
        
-    return NamedArray([Mean'; StdDev'; skew'; kurt'], (["Mean", "Std", "Skewness", "Kurtosis"], colnames), ("Rows", "Cols"))
+    return NamedArray([Mean StdDev skew kurt], (colnames, ["Mean", "Std", "Skewness", "Kurtosis"]), ("Tickers", "Moments"))  
+    
 end

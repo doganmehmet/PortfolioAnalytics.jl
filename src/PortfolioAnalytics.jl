@@ -1,13 +1,14 @@
 module PortfolioAnalytics
 
-# Write your package code here.
-
 using TSFrames
 using Statistics
 using Distributions
 using JuMP
-using Ipopt # solver used in JuMP
+using Ipopt
 using NamedArrays
+using MultiObjectiveAlgorithms
+using Plots
+using StatsPlots
 
 
 export Return
@@ -25,11 +26,17 @@ include("VaR.jl")
 export MeanReturn
 include("MeanReturn.jl")
 
+export StdDev
+include("StdDev.jl")
+
 export Moments
 include("Moments.jl")
 
 export PortfolioOptimize
 include("PortfolioOptimize.jl")
+
+export ExpectedShortfall
+include("ExpectedShortfall.jl")
 
 
 
