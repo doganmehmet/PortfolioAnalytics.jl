@@ -43,10 +43,7 @@ plot(prices_ts, size = (600, 420))
 title!("Stock prices")
 xlabel!("Date")
 ylabel!("Price")
-savefig("s-plot.svg"); nothing # hide
 ```
-
-![](s-plot.svg)
 
 !!! warning
     **PortfolioAnalytics** encourages you to **"Know Your Data"**. Some functions may not work in presence of `missing` and `NA` values.
@@ -641,9 +638,7 @@ end # hide
 opt = portfolio_optimize(returns)
 
 opt.plt
-savefig("o3-plot.svg"); nothing # hide
 ```
-![](o3-plot.svg)
 
 Expected return for the minumum variance portfolio.
 ```@example half-loop
@@ -666,9 +661,7 @@ For example, we want optimal portfolios with monthly expected returns higher tha
  ```@example half-loop
 opt = portfolio_optimize(returns, target = 0.035)
 opt.plt
-savefig("o4-plot.svg"); nothing # hide
 ```
-![](o4-plot.svg)
 
 ### 2. Sharpe Ratio
 Portfolio optimization with the Sharpe ratio is a method of finding an optimal portfolio with the highest excess return per unit of risk. The optimal portfolio is found by maximizing the expected return for a given Sharpe ratio.
@@ -694,17 +687,13 @@ Let's optimize the portfolio and plot the efficient frontier, a set of optimal p
 ```@example half-loop
 opt2 = portfolio_optimize(returns, "maximum sharpe")
 opt2.plt
-savefig("o5-plot.svg"); nothing # hide
 ```
-![](o5-plot.svg)
 
 Similar to *mean-variance* portfolios, we may consider portfolios with higher returns. Let's define a monthly target return of 4% and plot the efficient frontier.
 ```@example half-loop
 opt2 = portfolio_optimize(returns, "maximum sharpe", target = 0.04)
 opt2.plt
-savefig("o6-plot.svg"); nothing # hide
 ```
-![](o6-plot.svg)
 
 It's possible to extract the *risk*, defined as standard deviation, *Sharpe ratio*, and *weights* of each optimal portfolio in *efficient frontier*. This is particularly useful if you would like to make custom plots.
 

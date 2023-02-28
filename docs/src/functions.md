@@ -241,17 +241,13 @@ Minumum variance portfolio with 10% target return.
 ```@example half-loop
 opt1 = portfolio_optimize(R, "minumum variance", target = 0.1)
 opt1.plt
-savefig("o1-plot.svg"); nothing # hide
 ```
-![](o1-plot.svg)
 
 Maximum Sharpe portfolio with 15% target return.
 ```@example half-loop
 opt2 = portfolio_optimize(R, "maximum sharpe", target = 0.15)
 opt2.plt
-savefig("o2-plot.svg"); nothing # hide
 ```
-![](o2-plot.svg)
 
 ```@example half-loop
 using Plots
