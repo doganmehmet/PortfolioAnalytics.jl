@@ -39,11 +39,14 @@ weights = [0.4, 0.4, 0.2]
 
 ```@example half-loop
 using Plots # hide
-plot(prices_ts, size = (600, 400))
+plot(prices_ts, size = (600, 420))
 title!("Stock prices")
 xlabel!("Date")
 ylabel!("Price")
+savefig("s-plot.svg"); nothing # hide
 ```
+
+![](s-plot.svg)
 
 !!! warning
     **PortfolioAnalytics** encourages you to **"Know Your Data"**. Some functions may not work in presence of `missing` and `NA` values.
@@ -113,12 +116,12 @@ Where:
 * `R` is the return of an asset at periods `1`, `2` and so on.
 * `W` is the weight of an asset in a portfolio at periods `1`, `2` and so on.
 
-Note that *PortfolioReturn( )* function assumes:
+Note that *portfolio_return( )* function assumes:
 * the same weight for the holding period (`W` is the same at `t=1` through `t=N`).
 
 
 ```@example half-loop
-function PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT") # hide
+function portfolio_return(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT") # hide
 
     if period <= 0 # hide
         throw(ArgumentError("period must be a positive int")) # hide
@@ -140,17 +143,17 @@ function PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=
 
 end # hide
 
-preturns = PortfolioReturn(prices_ts, weights)
+preturns = portfolio_return(prices_ts, weights)
 ```
 
 Like the *Return( )* function, you can choose the method of return calculation using the **method** argument.
 ```@example half-loop
-PortfolioReturn(prices_ts, weights, method = "log")
+portfolio_return(prices_ts, weights, method = "log")
 ```
 
 It's possible to overwrite the default column name for the portfolio return column using the **colname** argument. To calculate the investment returns for a higher than one period, set a positive integer value for the **period** argument. 
 ```@example half-loop
-PortfolioReturn(prices_ts, weights, period = 3, method = "log", colname = "PRETURN")
+portfolio_return(prices_ts, weights, period = 3, method = "log", colname = "PRETURN")
 ```
 
 !!! tip
@@ -161,7 +164,7 @@ all_returns = TSFrames.join(returns, preturns)
 
 
 ## Average returns and risk
-You can use the **MeanReturn( )** function to calculate the average asset returns of some period.
+You can use the **mean_return( )** function to calculate the average asset returns of some period.
 
 ```math
 \mu = \frac{1}{n} \sum_{i=1}^n x_i
@@ -171,7 +174,7 @@ You can use the **MeanReturn( )** function to calculate the average asset return
 using Statistics # hide
 using NamedArrays # hide
 
-function MeanReturn(R::TSFrame; geometric::Bool=false) # hide
+function mean_return(R::TSFrame; geometric::Bool=false) # hide
     colnames = names(R) # hide
     R = Matrix(R) # hide
     if geometric == false # hide
@@ -186,29 +189,29 @@ function MeanReturn(R::TSFrame; geometric::Bool=false) # hide
     return meanReturn # hide
 end # hide
 
-MeanReturn(all_returns)
+mean_return(all_returns)
 ```
 
 To calculate the *geometric mean*, set the **geometric** parameter to `true`.
 ```@example half-loop
-MeanReturn(all_returns, geometric=true)
+mean_return(all_returns, geometric=true)
 ```
 
-To calculate the standard deviation of asset returns of some period, you can use the **StdDev( )** function.
+To calculate the standard deviation of asset returns of some period, you can use the **stddev( )** function.
 ```math
 \sigma = \sqrt{\frac{1}{n} \sum_{i=1}^n (x_i - \mu)^2}
 ```
 
 
 ```@example half-loop
-function StdDev(R::TSFrame) # hide
+function stddev(R::TSFrame) # hide
     sddev = Statistics.std.(eachcol(Matrix(R))) # hide
     colnames = names(R)  # hide
     standev = NamedArray(sddev, colnames, "σ") # hide
     return standev # hide
 end # hide
 
-StdDev(all_returns)
+stddev(all_returns)
 ```
 
 
@@ -234,7 +237,7 @@ Where:
 
 As we use monthly returns in our example, we need to multiply them by *12* to annualize.
 ```@example half-loop
-returns_annualized  = MeanReturn(all_returns) .* 12
+returns_annualized  = mean_return(all_returns) .* 12
 ```
 
 ###### Annualizing standard deviation
@@ -246,7 +249,7 @@ Where:
 
 We can multiply the result of StdDev by ``\sqrt{12}`` to annualize the standard deviation of monthly returns.
 ```@example half-loop
-std_annualized  = StdDev(all_returns) .* sqrt(12)
+std_annualized  = stddev(all_returns) .* sqrt(12)
 ```
 
 ## Moments
@@ -254,7 +257,7 @@ Moments are statistical measures that describe certain characteristics of a prob
 
 The first moment is equal to the **mean** of X. The second moment is related to the **variance** of X. The third moment is associated with the **skewness** of X. Finally, the fourth moment is related to the **kurtosis** of X. 
 
-You can use the **Moments( )** function to calculate the statistical moments of asset returns of interest.  **Standard deviation** is a more widely used risk metric than the variance in portfolio management; therefore *Moments( )* function uses standard deviation instead of variance.
+You can use the **moments( )** function to calculate the statistical moments of asset returns of interest.  **Standard deviation** is a more widely used risk metric than the variance in portfolio management; therefore *moments( )* function uses standard deviation instead of variance.
 
 *Mean return* is considered as *expected return* in many applications. It's the sum of a series of returns divided by the count of that series of returns.
 
@@ -275,7 +278,7 @@ skewness = \frac{\sum_{i=1}^n (x_i - \mu)^3}{n . \sigma^3}
 ```
 Kurtosis measures how peaked or flat the distribution of returns is. It tells you how often extreme returns occur. Investors generally consider high kurtosis a sign of higher risk because it means more frequent extreme returns (positive or negative) than normal. This is called kurtosis risk. When the excess kurtosis is around 0, or the kurtosis equals about 3, the tails' kurtosis level is similar to the normal distribution. 
 
-In the *Moments( )* function, *kurtosis* refers to *excess kurtosis*, which is `kurtosis − 3`.
+In the *moments( )* function, *kurtosis* refers to *excess kurtosis*, which is `kurtosis − 3`.
 
 
 ```math
@@ -285,7 +288,7 @@ kurtosis = \frac{\sum_{i=1}^n (x_i - \mu)^4}{n . \sigma^4}
 ```@example half-loop
 using Distributions # hide
 
-function Moments(R::TSFrame) # hide
+function moments(R::TSFrame) # hide
     
     Mean = Statistics.mean.(eachcol(Matrix(R))) # hide
     StdDev = Statistics.std.(eachcol(Matrix(R))) # hide
@@ -296,7 +299,7 @@ function Moments(R::TSFrame) # hide
     return NamedArray([Mean StdDev skew kurt], (colnames, ["Mean", "Std", "Skewness", "Kurtosis"]), ("Tickers", "Moments")) # hide
 end # hide
 
-Moments(all_returns)
+moments(all_returns)
 ```
 
 
@@ -315,7 +318,7 @@ $\sigma_p$ is the `standard deviation` for the same period.\
 $R_f$ is the `risk-free rate.`
 
 ```@example half-loop
-function SharpeRatio(R::TSFrame, Rf::Number=0) # hide
+function sharpe(R::TSFrame, Rf::Number=0) # hide
     meanReturn = mean.(eachcol(Matrix(R))) # hide
     StdDev = std.(eachcol(Matrix(R))) # hide
     sharpe = (meanReturn .- Rf) ./ StdDev # hide
@@ -326,14 +329,14 @@ function SharpeRatio(R::TSFrame, Rf::Number=0) # hide
     
 end # hide
 
-SharpeRatio(all_returns)
+sharpe(all_returns)
 ```
 Based on Jan through Dec 2021, we'd obtain the best return by buying Microsoft stocks after adjusting for the risk. 
 
 Sharpe Ratios are equal to the effective return divided by the standard deviation. Similar to annualizing standard deviation, daily, weekly, or monthly Sharpe Ratios are annualized by multiplying by the square root of the higher frequency period. 
 
 ```@example half-loop
-sharpe_annualized  = SharpeRatio(all_returns) .* sqrt(12)
+sharpe_annualized  = sharpe(all_returns) .* sqrt(12)
 ```
 
 
@@ -400,7 +403,7 @@ The *Monte Carlo* method is a technique of numerical integration that can be use
 The main difference between *VaR* and *ES* is that *VaR* only considers losses up to a certain threshold, while *ES* considers losses beyond that threshold. This means that *ES* captures more information about the tail risk of a portfolio than VaR does. *ES* is also considered more coherent and subadditive than VaR, which satisfies some desirable properties for a risk measure.
 
 ```@example half-loop
-function ExpectedShortfall(R::TSFrame, p::Number=0.95; method::String="historical") # hide
+function es(R::TSFrame, p::Number=0.95; method::String="historical") # hide
     
     valueatrisk = Vector(VaR(R, p, method = method)) # hide
     idx = Matrix(R) .< valueatrisk' # hide
@@ -421,12 +424,12 @@ function ExpectedShortfall(R::TSFrame, p::Number=0.95; method::String="historica
 
 end # hide
 
-ExpectedShortfall(all_returns)
+es(all_returns)
 ```
 
-Similar to the *VaR( )* function, we can specify the **confidence level** and **method** of the calculation in the *ExpectedShortfall( )* function. 
+Similar to the *VaR( )* function, we can specify the **confidence level** and **method** of the calculation in the *es( )* function. 
 ```@example half-loop
-ExpectedShortfall(all_returns, 0.80, method = "parametric")
+es(all_returns, 0.80, method = "parametric")
 ```
 
 ## Portfolio Optimization
@@ -439,9 +442,9 @@ Many portfolio optimization methods use different criteria and techniques to fin
 * *Value-at-Risk (VaR)*: This method uses a probability threshold to measure risk and tries to find the portfolio with the highest return while keeping its loss below a certain level with a specified confidence level.
 * *Expected Shortfall*: This method uses expected loss beyond VaR as a measure of risk and tries to find the portfolio with the highest return while minimizing its potential extreme loss.
 
-The **PortfolioOptmize( )** function is used to find the optimal weights of a portfolio for a chosen objective and target return. The set of optimal portfolios forms a curve called the **efficient frontier**.
+The **portfolio_optimize( )** function is used to find the optimal weights of a portfolio for a chosen objective and target return. The set of optimal portfolios forms a curve called the **efficient frontier**.
 
-At the moment it is possible to find *mean-variance* and *maximum-sharpe* portfolios. Optimization using *Value at Risk (VaR)* and *Expected Shortfall (CVaR)* will be implemented as part of the next releases.
+At the moment it is possible to find *mean-variance* and *maximum-sharpe* portfolios. Optimization using *Value at Risk (VaR)* and *Expected Shortfall (ES)* will be implemented as part of the next releases.
 
 #### Risk of a portfolio
 - Investing is risky: individual assets will go up or down
@@ -489,6 +492,7 @@ where $σ_{1,2} = σ_{2,1}$
 \sigma_{p}^2 = w_{1}^2σ_{1}^2 + w_{2}^2σ_{2}^2 + 2w_{1}w_{2}σ_{1,2}
 ```
 
+So, it can be extended to any number of assets in the below form:
 ```math
 Portfolio \space\ variance = w' * Q * w
 ```
@@ -530,7 +534,7 @@ using MultiObjectiveAlgorithms # hide
 using Plots # hide
 using StatsPlots # hide
 
-function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0) # hide
+function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0) # hide
 
     colnames = names(R) # used only for naming array # hide
     R = Matrix(R) # hide
@@ -586,7 +590,7 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
             po, # hide
             pm*100; # hide
             xlabel = "StdDev", # hide
-            ylabel = "Expected Return (%)", # hide
+            ylabel = "Return (%)", # hide
             label = "", # hide
             markersize = 5, # hide
             legend = :bottomright, # hide
@@ -611,7 +615,7 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
             po, # hide
             pm*100; # hide
             xlabel = "Sharpe", # hide
-            ylabel = "Expected Return (%)", # hide
+            ylabel = "Return (%)", # hide
             label = "", # hide
             markersize = 5, # hide
             legend = :bottomright, # hide
@@ -634,10 +638,12 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
 
 end # hide
 
-opt = PortfolioOptimize(returns)
+opt = portfolio_optimize(returns)
 
 opt.plt
+savefig("o3-plot.svg"); nothing # hide
 ```
+![](o3-plot.svg)
 
 Expected return for the minumum variance portfolio.
 ```@example half-loop
@@ -654,13 +660,15 @@ opt.pweights
 
 So if we have \$1000 and buy \$440 (44%) Netflix shares and \$560 (56%) Microsoft shares, we expect, on average, \$25 (2.5%) monthly return and our portfolio to fluctuate \$53 (5.3%). \$25 (2.5%) monthly expected return is a good deal for a minimum-variance portfolio, but the data we work with in this tutorial is only from Jan 2021 through Dec 2021. It is one of the good years for the stock market. Be careful about the data you use when making investment decisions!
 
-Investors do not always want to choose a portfolio with the lowest risk. Instead, they may want to accept a higher risk for a higher return. The best way to achieve this is to define a target return by setting a value to the **target** parameter in the **PortfolioOptmize( )** function. It will automatically eliminate the portfolios with lower-than-defined target returns.
+Investors do not always want to choose a portfolio with the lowest risk. Instead, they may want to accept a higher risk for a higher return. The best way to achieve this is to define a target return by setting a value to the **target** parameter in the **portfolio_optimize( )** function. It will automatically eliminate the portfolios with lower-than-defined target returns.
 
 For example, we want optimal portfolios with monthly expected returns higher than 3.5%.
  ```@example half-loop
-opt = PortfolioOptimize(returns, target = 0.035)
+opt = portfolio_optimize(returns, target = 0.035)
 opt.plt
+savefig("o4-plot.svg"); nothing # hide
 ```
+![](o4-plot.svg)
 
 ### 2. Sharpe Ratio
 Portfolio optimization with the Sharpe ratio is a method of finding an optimal portfolio with the highest excess return per unit of risk. The optimal portfolio is found by maximizing the expected return for a given Sharpe ratio.
@@ -684,15 +692,19 @@ Where;
 
 Let's optimize the portfolio and plot the efficient frontier, a set of optimal portfolios that offer the highest expected return for a given level of Sharpe Ratio.
 ```@example half-loop
-opt2 = PortfolioOptimize(returns, "maximum sharpe")
+opt2 = portfolio_optimize(returns, "maximum sharpe")
 opt2.plt
+savefig("o5-plot.svg"); nothing # hide
 ```
+![](o5-plot.svg)
 
 Similar to *mean-variance* portfolios, we may consider portfolios with higher returns. Let's define a monthly target return of 4% and plot the efficient frontier.
 ```@example half-loop
-opt2 = PortfolioOptimize(returns, "maximum sharpe", target = 0.04)
+opt2 = portfolio_optimize(returns, "maximum sharpe", target = 0.04)
 opt2.plt
+savefig("o6-plot.svg"); nothing # hide
 ```
+![](o6-plot.svg)
 
 It's possible to extract the *risk*, defined as standard deviation, *Sharpe ratio*, and *weights* of each optimal portfolio in *efficient frontier*. This is particularly useful if you would like to make custom plots.
 

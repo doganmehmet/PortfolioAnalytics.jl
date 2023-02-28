@@ -6,14 +6,14 @@ The **PortfolioAnalytics.jl** aims to provide users with functionality for perfo
 
 The following functions are available in stable version:
 * Return( )
-* PortfolioReturn( )
-* SharpeRatio( )
+* portfolio_return( )
+* sharpe( )
 * VaR( )
-* PortfolioOptimize( )
-* MeanReturns( )
-* StdDev( )
-* Moments( )
-* ExpectedShortfall( )
+* portfolio_optimize( )
+* mean_returns( )
+* stddev( )
+* moments( )
+* es( )
 
 This package generally requires return (rather than price) data. Almost all functions will work with any periodicity, from annual, monthly, daily, to even minutes and seconds, either regular or irregular.
 

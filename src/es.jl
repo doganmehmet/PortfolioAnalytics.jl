@@ -1,5 +1,5 @@
 """
-    ExpectedShortfall(R::TSFrame, p::Number=0.95; method::String="historical")
+    es(R::TSFrame, p::Number=0.95; method::String="historical")
 
 Calculates `Expected Shortfall (Conditional Value at Risk)` from `asset returns`. Output is a `NamedArray`.
 
@@ -10,7 +10,7 @@ Calculates `Expected Shortfall (Conditional Value at Risk)` from `asset returns`
 
 # Example
 ```julia
-julia> ES = ExpectedShortfall(all_returns)
+julia> ES = es(all_returns)
 4-element Named Vector{Any}
 95% historical ES  │
 ───────────────────┼───────────
@@ -25,7 +25,7 @@ PORT               │ -0.0577836
  * Available methods: `"historical"` and `"parametric"`
  * Monte Carlo method will be implemented as part of the next release
 """
-function ExpectedShortfall(R::TSFrame, p::Number=0.95; method::String="historical")
+function es(R::TSFrame, p::Number=0.95; method::String="historical")
     
 valueatrisk = vec(VaR(R, p, method = method))
 idx = Matrix(R) .< valueatrisk'

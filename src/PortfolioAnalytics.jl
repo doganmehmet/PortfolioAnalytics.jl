@@ -14,29 +14,29 @@ using StatsPlots
 export Return
 include("Return.jl") 
 
-export PortfolioReturn
-include("PortfolioReturn.jl")
+export portfolio_return
+include("portfolio_return.jl")
 
-export SharpeRatio
-include("SharpeRatio.jl")
+export sharpe
+include("sharpe.jl")
 
 export VaR
 include("VaR.jl")
 
-export MeanReturn
-include("MeanReturn.jl")
+export mean_return
+include("mean_return.jl")
 
-export StdDev
-include("StdDev.jl")
+export stddev
+include("stddev.jl")
 
-export Moments
-include("Moments.jl")
+export moments
+include("moments.jl")
 
-export PortfolioOptimize
-include("PortfolioOptimize.jl")
+export portfolio_optimize
+include("portfolio_optimize.jl")
 
-export ExpectedShortfall
-include("ExpectedShortfall.jl")
+export es
+include("es.jl")
 
 
 

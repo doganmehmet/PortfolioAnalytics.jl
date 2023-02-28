@@ -1,5 +1,5 @@
 """
-    MeanReturn(R::TSFrame; geometric::Bool = false)
+    mean_return(R::TSFrame; geometric::Bool = false)
 
 Calculates the `mean return` from `asset returns`. Output is a `NamedArray`.
 
@@ -9,7 +9,7 @@ Calculates the `mean return` from `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> MeanReturn(all_returns)
+julia> mean_return(all_returns)
 4-element Named Vector{Float64}
 μ    │
 ─────┼──────────
@@ -19,7 +19,7 @@ MSFT │ 0.0366371
 PORT │ 0.0289375
 
 
-julia> MeanReturn(all_returns, geometric=true)
+julia> mean_return(all_returns, geometric=true)
 4-element Named Vector{Float64}
 μ    │
 ─────┼───────────
@@ -29,7 +29,7 @@ MSFT │  0.0350585
 PORT │  0.0257348
 ```
 """
-function MeanReturn(R::TSFrame; geometric::Bool=false)
+function mean_return(R::TSFrame; geometric::Bool=false)
     colnames = names(R)
     R = Matrix(R)
 

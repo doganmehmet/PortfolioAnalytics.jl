@@ -13,14 +13,14 @@ Read the [documentation](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev
 
 The following functions are available in the stable version:
 * Return( )
-* PortfolioReturn( )
-* SharpeRatio( )
+* portfolio_return( )
+* sharpe( )
 * VaR( )
-* PortfolioOptimize( )
-* MeanReturns( )
-* StdDev( )
-* Moments( )
-* ExpectedShortfall( )
+* portfolio_optimize( )
+* mean_return( )
+* stddev( )
+* moments( )
+* es( )
 
 ### Contributions are most welcome
 We greatly value contributions of any kind. Contributions could include but are not limited to documentation improvements, bug reports, new or improved code, scientific and technical code reviews, infrastructure improvements, mailing lists, chat participation, community help/building, education, and outreach.
@@ -31,14 +31,8 @@ Please report any issues via the GitHub issue tracker. All kinds of issues are w
 ### Acknowledgement
 The package is inspired by *PerformanceAnalytics* and *PortfolioAnalytics* packages in R and *pyfolio* in Python.
 
-### What's new in v0.2.0?
-* **input object types** are specified for all functions
-* Most of the functions now work in the presence of `missing` values, but you're encouraged to *"Know Your Data"*
-* **"period"** parameter to calculate returns for higher periods and  **log return** method is added for *Return( )* and *PortfolioReturn( )* functions
-* **"maximum-sharpe"** portfolio optimization and option to define a **target portfolio return** are added for *PortfolioOptmize( )*
-* **NamedArray**'s are added for functions where makes sense 
-* **SharpeRatio( )** now returns a proper NamedArray
-* **VaR( )** accepts multiple columns
+### Release notes
+Please read the release notes for more information on releases.
 
 ## User Guide
 The package is under development, and the dev version may differ from the stable version.
@@ -138,9 +132,9 @@ julia> log_returns = Return(prices_ts, method = "log")
  2021-12-31  -0.079951   -0.0634445   0.0171842
 ```
 
-### PortfolioReturn( )
+### portfolio_return( )
 ```julia
-julia> preturns = PortfolioReturn(prices_ts, weights)
+julia> preturns = portfolio_return(prices_ts, weights)
 12×1 TSFrame with Date Index
  Index       PORT        
  Date        Float64?    
@@ -158,7 +152,7 @@ julia> preturns = PortfolioReturn(prices_ts, weights)
  2021-11-30  -0.017631
  2021-12-31  -0.0518583
 
- julia> log_preturns = PortfolioReturn(prices_ts, weights, method = "log")
+ julia> log_preturns = portfolio_return(prices_ts, weights, method = "log")
  12×1 TSFrame with Date Index
   Index       PORT        
   Date        Float64?    
@@ -198,9 +192,9 @@ julia> all_returns = TSFrames.join(returns, preturns)
  2021-12-31  -0.0768384  -0.0614737   0.0173326   -0.0518583
 ```
 
-### SharpeRatio( )
+### sharpe( )
 ```julia
-julia> sharpe = SharpeRatio(all_returns)
+julia> sharpe = sharpe(all_returns)
 4-element Named Vector{Float64}
 Sharpe Ratio (Rf=0)  │
 ─────────────────────┼─────────
@@ -210,9 +204,9 @@ MSFT                 │ 0.606824
 PORT                 │ 0.329079
 ```
 
-### MeanReturn( )
+### mean_return( )
 ```julia
-julia> mreturn = MeanReturn(all_returns)
+julia> mreturn = mean_return(all_returns)
 4-element Named Vector{Float64}
 μ    │
 ─────┼──────────
@@ -222,7 +216,7 @@ MSFT │ 0.0366371
 PORT │ 0.0289375
 
 
-julia> MeanReturn(all_returns, geometric=true)
+julia> mean_return(all_returns, geometric=true)
 4-element Named Vector{Float64}
 μ    │
 ─────┼───────────
@@ -232,9 +226,9 @@ MSFT │  0.0350585
 PORT │  0.0257348
 ```
 
-### StdDev( )
+### stddev( )
 ```julia
-julia> StdDev(all_returns)
+julia> stddev(all_returns)
 4-element Named Vector{Float64}
 σ    │
 ─────┼──────────
@@ -244,9 +238,9 @@ MSFT │ 0.0603753
 PORT │ 0.0879347
 ```
 
-### Moments( )
+### moments( )
 ```julia
-julia> pmoments = Moments(all_returns)
+julia> pmoments = moments(all_returns)
 4×4 Named Matrix{Float64}
 Tickers ╲ Moments │      Mean        Std   Skewness   Kurtosis
 ──────────────────┼───────────────────────────────────────────
@@ -278,9 +272,9 @@ MSFT                │ -0.0407369
 PORT                │ -0.0837553
 ```
 
-### ExpectedShortfall( )
+### es( )
 ```julia
-julia> ES = ExpectedShortfall(all_returns)
+julia> ES = es(all_returns)
 4-element Named Vector{Any}
 95% historical ES  │
 ───────────────────┼───────────
@@ -290,9 +284,9 @@ MSFT               │  -0.066119
 PORT               │ -0.0577836
 ```
 
-### PortfolioOptimize( )
+### portfolio_optimize( )
 ```julia
-julia> opt1 = PortfolioOptimize(returns, "minumum variance")
+julia> opt1 = portfolio_optimize(returns, "minumum variance")
 
 julia> opt_weights = opt1.pweights
 3-element Named Vector{Float64}
@@ -306,7 +300,7 @@ MSFT             │ 0.5562
 julia> opt1.plt
 
 # Optimize minumum-variance portfolio with a minumum return target of 4%
-julia> opt2 = PortfolioOptimize(returns, "minumum variance", target = 0.04)
+julia> opt2 = portfolio_optimize(returns, "minumum variance", target = 0.04)
 
 # optimal portfolio weights for a chosen objective and target return
 julia> opt2.pweights
@@ -318,7 +312,7 @@ NFLX             │    0.0
 MSFT             │ 0.4858
 
 # Maximum-Sharpe portfolios
-julia> opt3 = PortfolioOptimize(returns, "maximum sharpe")
+julia> opt3 = portfolio_optimize(returns, "maximum sharpe")
 
 # Optimal weights for maximum-sharpe portfolio 
 julia> opt3.pweights

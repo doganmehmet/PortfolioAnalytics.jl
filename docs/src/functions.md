@@ -45,7 +45,7 @@ Return
 ```
 
 ```@docs
-PortfolioReturn
+portfolio_return
 ```
 
 ```julia
@@ -69,11 +69,11 @@ julia> all_returns = TSFrames.join(returns, preturns)
 ```
 
 ```@docs
-SharpeRatio
+sharpe
 ```
 
 ```@docs
-MeanReturn
+mean_return
 ```
 
 ```@example
@@ -88,11 +88,11 @@ bar(names(mreturn), mreturn, labels = false)
 ```
 
 ```@docs
-StdDev
+stddev
 ```
 
 ```@docs
-Moments
+moments
 ```
 
 ```@docs
@@ -100,11 +100,11 @@ VaR
 ```
 
 ```@docs
-ExpectedShortfall
+es
 ```
 
 ```@docs
-PortfolioOptimize
+portfolio_optimize
 ```
 ##### Example
 ```@example half-loop; continued = true
@@ -120,7 +120,7 @@ using MultiObjectiveAlgorithms # hide
 using Plots # hide
 using StatsPlots # hide
 
-function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0) # hide
+function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0) # hide
 
     colnames = names(R) # used only for naming array # hide
     R = Matrix(R) # hide
@@ -176,7 +176,7 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
             po, # hide
             pm*100; # hide
             xlabel = "StdDev", # hide
-            ylabel = "Expected Return (%)", # hide
+            ylabel = "Return (%)", # hide
             label = "", # hide
             markersize = 5, # hide
             legend = :bottomright, # hide
@@ -201,7 +201,7 @@ function PortfolioOptimize(R::TSFrame, objective::String = "minumum variance"; t
             po, # hide
             pm*100; # hide
             xlabel = "Sharpe", # hide
-            ylabel = "Expected Return (%)", # hide
+            ylabel = "Return (%)", # hide
             label = "", # hide
             markersize = 5, # hide
             legend = :bottomright, # hide
@@ -232,23 +232,26 @@ R = TSFrame([bond stock], colnames  = [:bond, :stock])
 
 Minumum variance portfolio.
 ```@example half-loop
-opt = PortfolioOptimize(R, "minumum variance")
+opt = portfolio_optimize(R, "minumum variance")
 opt.pweights
 ```
 
 
 Minumum variance portfolio with 10% target return.
 ```@example half-loop
-opt1 = PortfolioOptimize(R, "minumum variance", target = 0.1)
+opt1 = portfolio_optimize(R, "minumum variance", target = 0.1)
 opt1.plt
+savefig("o1-plot.svg"); nothing # hide
 ```
+![](o1-plot.svg)
 
 Maximum Sharpe portfolio with 15% target return.
 ```@example half-loop
-opt2 = PortfolioOptimize(R, "maximum sharpe", target = 0.15)
+opt2 = portfolio_optimize(R, "maximum sharpe", target = 0.15)
 opt2.plt
+savefig("o2-plot.svg"); nothing # hide
 ```
-
+![](o2-plot.svg)
 
 ```@example half-loop
 using Plots

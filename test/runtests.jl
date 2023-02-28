@@ -17,22 +17,22 @@ using Test
 
     @test round(PortfolioAnalytics.Return(prices_ts,1)[1,1], digits = 4) ==  0.1245
 
-    @test round(PortfolioAnalytics.PortfolioReturn(prices_ts, weights)[1,1], digits = 4) ==  0.0522
+    @test round(PortfolioAnalytics.portfolio_return(prices_ts, weights)[1,1], digits = 4) ==  0.0522
 
     @test round(PortfolioAnalytics.VaR(prices_ts)["TSLA"], digits = 4) == 216.944
     @test round(PortfolioAnalytics.VaR(prices_ts, 0.9, method = "parametric")["TSLA"], digits = 4) == 188.3264
 
-    @test round(PortfolioAnalytics.SharpeRatio(prices_ts)["TSLA"], digits = 4) == 4.3921
+    @test round(PortfolioAnalytics.sharpe(prices_ts)["TSLA"], digits = 4) == 4.3921
 
-    @test round(PortfolioAnalytics.MeanReturn(prices_ts)["TSLA"], digits=4) == 265.9177
+    @test round(PortfolioAnalytics.mean_return(prices_ts)["TSLA"], digits=4) == 265.9177
 
-    @test round(PortfolioAnalytics.StdDev(prices_ts)["TSLA"], digits=4) == 60.5448
+    @test round(PortfolioAnalytics.stddev(prices_ts)["TSLA"], digits=4) == 60.5448
 
-    @test round(PortfolioAnalytics.Moments(prices_ts)["TSLA", "Mean"], digits = 4) == 265.9177
+    @test round(PortfolioAnalytics.moments(prices_ts)["TSLA", "Mean"], digits = 4) == 265.9177
 
-    @test round(PortfolioAnalytics.PortfolioOptimize(prices_ts).prisk, digits=4) == 40.8902
+    @test round(PortfolioAnalytics.portfolio_optimize(prices_ts).prisk, digits=4) == 40.8902
 
-    @test round(PortfolioAnalytics.ExpectedShortfall(prices_ts)["TSLA"], digits=4) == 208.4
+    @test round(PortfolioAnalytics.es(prices_ts)["TSLA"], digits=4) == 208.4
 
 
 

@@ -1,11 +1,11 @@
 """
-    Moments(R::TSFrame)
+    moments(R::TSFrame)
 
 Calculates the `(statistical) moments` of `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> pmoments = Moments(all_returns)
+julia> pmoments = moments(all_returns)
 4×4 Named Matrix{Float64}
 Tickers ╲ Moments │      Mean        Std   Skewness   Kurtosis
 ──────────────────┼───────────────────────────────────────────
@@ -21,7 +21,7 @@ PORT              │ 0.0289375  0.0879347    1.53379    2.19321
 # Notes:
  * `Kurtosis`: `excess kurtosis`
 """
-function Moments(R::TSFrame)
+function moments(R::TSFrame)
     
     colnames = names(R)
     R = Matrix(R)

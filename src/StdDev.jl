@@ -1,11 +1,11 @@
 """
-    StdDev(R::TSFrame)
+    stddev(R::TSFrame)
 
 Calculates the `standard deviation` of `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> StdDev(all_returns)
+julia> stddev(all_returns)
 4-element Named Vector{Float64}
 σ    │
 ─────┼──────────
@@ -15,7 +15,7 @@ MSFT │ 0.0603753
 PORT │ 0.0879347
 ```
 """
-function StdDev(R::TSFrame)
+function stddev(R::TSFrame)
 
     colnames = names(R)
     R = Matrix(R)

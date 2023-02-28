@@ -1,5 +1,5 @@
 """
-    SharpeRatio(R::TSFrame, Rf::Number=0)
+    sharpe(R::TSFrame, Rf::Number=0)
 
 Calculates `Sharpe Ratio` from `asset returns`. Output is a `NamedArray`.
 
@@ -9,7 +9,7 @@ Calculates `Sharpe Ratio` from `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> sharpe = SharpeRatio(all_returns)
+julia> sharpe = sharpe(all_returns)
 4-element Named Vector{Float64}
 Sharpe Ratio (Rf=0)  │
 ─────────────────────┼─────────
@@ -19,7 +19,7 @@ MSFT                 │ 0.606824
 PORT                 │ 0.329079
 ```
 """
-function SharpeRatio(R::TSFrame, Rf::Number=0)
+function sharpe(R::TSFrame, Rf::Number=0)
     
     colnames = names(R)
     R = Matrix(R)

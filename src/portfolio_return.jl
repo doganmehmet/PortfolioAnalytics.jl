@@ -1,5 +1,5 @@
 """
-    PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT")
+    portfolio_return(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT")
 
 Calculates `portfolio return` from `asset prices` and given `weights`.
 
@@ -12,7 +12,7 @@ Calculates `portfolio return` from `asset prices` and given `weights`.
 
 # Example
 ```julia
-julia> preturns = PortfolioReturn(prices_ts, weights)
+julia> preturns = portfolio_return(prices_ts, weights)
 12×1 TSFrame with Date Index
  Index       PORT        
  Date        Float64?    
@@ -31,7 +31,7 @@ julia> preturns = PortfolioReturn(prices_ts, weights)
  2021-12-31  -0.0518583
 
 
- julia> log_preturns = PortfolioReturn(prices_ts, weights, method = "log")
+ julia> log_preturns = portfolio_return(prices_ts, weights, method = "log")
  12×1 TSFrame with Date Index
   Index       PORT        
   Date        Float64?    
@@ -53,7 +53,7 @@ julia> preturns = PortfolioReturn(prices_ts, weights)
 # Notes:
  * `missing` resulting from the function is automatically removed.
 """
-function PortfolioReturn(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT")
+function portfolio_return(price::TSFrame, weights::Vector{<:Number}; period::Int=1, method::String="simple", colname::String="PORT")
 
     if period <= 0
         throw(ArgumentError("period must be a positive int"))
