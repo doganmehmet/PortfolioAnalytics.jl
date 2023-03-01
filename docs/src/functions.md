@@ -217,7 +217,7 @@ function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; 
             title = "", # hide
         ) # hide
 
-        plt = Plots.plot(plt_objective, decision_space; layout = (2, 1)) # hide
+        plt = Plots.plot(plt_objective, decision_space; layout = (2, 1); margin=10Plots.mm) # hide
     end # hide
 
     return (preturn = portreturn, prisk = portrisk, psharpe = portsharpe, pweights = weights, plt = plt, pm = pm, po = po, pw = pw) # hide
