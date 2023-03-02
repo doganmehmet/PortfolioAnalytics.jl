@@ -15,12 +15,12 @@ using Test
 
     weights = [0.4, 0.4, 0.2]
 
-    @test round(PortfolioAnalytics.Return(prices_ts,1)[1,1], digits = 4) ==  0.1245
+    @test round(PortfolioAnalytics.asset_return(prices_ts,1)[1,1], digits = 4) ==  0.1245
 
     @test round(PortfolioAnalytics.portfolio_return(prices_ts, weights)[1,1], digits = 4) ==  0.0522
 
-    @test round(PortfolioAnalytics.VaR(prices_ts)["TSLA"], digits = 4) == 216.944
-    @test round(PortfolioAnalytics.VaR(prices_ts, 0.9, method = "parametric")["TSLA"], digits = 4) == 188.3264
+    @test round(PortfolioAnalytics.value_at_risk(prices_ts)["TSLA"], digits = 4) == 216.944
+    @test round(PortfolioAnalytics.value_at_risk(prices_ts, 0.9, method = "parametric")["TSLA"], digits = 4) == 188.3264
 
     @test round(PortfolioAnalytics.sharpe(prices_ts)["TSLA"], digits = 4) == 4.3921
 
