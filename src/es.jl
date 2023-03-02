@@ -10,14 +10,13 @@ Calculates `Expected Shortfall (Conditional Value at Risk)` from `asset returns`
 
 # Example
 ```julia
-julia> ES = es(all_returns)
+julia> ES = es(returns)
 4-element Named Vector{Any}
 95% historical ES  │
 ───────────────────┼───────────
 TSLA               │  -0.148766
 NFLX               │ -0.0701279
 MSFT               │  -0.066119
-PORT               │ -0.0577836
 ```
 
 

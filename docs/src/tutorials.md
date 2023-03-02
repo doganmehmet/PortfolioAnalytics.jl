@@ -208,7 +208,7 @@ function stddev(R::TSFrame) # hide
     return standev # hide
 end # hide
 
-stddev(all_returns)
+stddev(returns)
 ```
 
 
@@ -296,7 +296,7 @@ function moments(R::TSFrame) # hide
     return NamedArray([Mean StdDev skew kurt], (colnames, ["Mean", "Std", "Skewness", "Kurtosis"]), ("Tickers", "Moments")) # hide
 end # hide
 
-moments(all_returns)
+moments(returns)
 ```
 
 
@@ -326,14 +326,14 @@ function sharpe(R::TSFrame, Rf::Number=0) # hide
     
 end # hide
 
-sharpe(all_returns)
+sharpe(returns)
 ```
 Based on Jan through Dec 2021, we'd obtain the best return by buying Microsoft stocks after adjusting for the risk. 
 
 Sharpe Ratios are equal to the effective return divided by the standard deviation. Similar to annualizing standard deviation, daily, weekly, or monthly Sharpe Ratios are annualized by multiplying by the square root of the higher frequency period. 
 
 ```@example half-loop
-sharpe_annualized  = sharpe(all_returns) .* sqrt(12)
+sharpe_annualized  = sharpe(returns) .* sqrt(12)
 ```
 
 
@@ -369,14 +369,14 @@ function VaR(R::TSFrame, p::Number=0.95; method::String="historical") # hide
 end # hide
 
 
-VaR(all_returns)
+VaR(returns)
 ```
 The output tells us that there is a `5%` chance that our portfolio (*PORT*) will lose more than `5.59%` in a month.
 
 
 We also can specify the confidence level.
 ```@example half-loop
-VaR(all_returns, 0.90)
+VaR(returns, 0.90)
 ```
 
 
@@ -385,7 +385,7 @@ VaR(all_returns, 0.90)
 
 To calculate the *parametric VaR*, we need to specify it using the **method** argument.
 ```@example half-loop
-VaR(all_returns, method = "parametric")
+VaR(returns, method = "parametric")
 ```
 
 #### 3. Monte Carlo Method
@@ -421,12 +421,12 @@ function es(R::TSFrame, p::Number=0.95; method::String="historical") # hide
 
 end # hide
 
-es(all_returns)
+es(returns)
 ```
 
 Similar to the *VaR( )* function, we can specify the **confidence level** and **method** of the calculation in the *es( )* function. 
 ```@example half-loop
-es(all_returns, 0.80, method = "parametric")
+es(returns, 0.80, method = "parametric")
 ```
 
 ## Portfolio Optimization

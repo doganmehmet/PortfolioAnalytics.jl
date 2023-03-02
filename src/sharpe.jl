@@ -9,14 +9,13 @@ Calculates `Sharpe Ratio` from `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> sharpe = sharpe(all_returns)
+julia> sharpe = sharpe(returns)
 4-element Named Vector{Float64}
 Sharpe Ratio (Rf=0)  │
 ─────────────────────┼─────────
 TSLA                 │ 0.288602
 NFLX                 │ 0.170242
 MSFT                 │ 0.606824
-PORT                 │ 0.329079
 ```
 """
 function sharpe(R::TSFrame, Rf::Number=0)
