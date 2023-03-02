@@ -1,5 +1,5 @@
 """
-    VaR(R::TSFrame, p::Number=0.95; method::String="historical")
+    value_at_risk(R::TSFrame, p::Number=0.95; method::String="historical")
 
 Calculates `Value-at-Risk(VaR)` from `asset returns`. Output is a `NamedArray`.
 
@@ -10,7 +10,7 @@ Calculates `Value-at-Risk(VaR)` from `asset returns`. Output is a `NamedArray`.
 
 # Example
 ```julia
-julia> var_historical = VaR(returns)
+julia> var_historical = value_at_risk(returns)
 4-element Named Vector{Float64}
 95% historical VaR  │
 ────────────────────┼───────────
@@ -18,7 +18,7 @@ TSLA                │  -0.132252
 NFLX                │ -0.0653681
 MSFT                │  -0.035206
 
-julia> var_parametric = VaR(returns, 0.90, method = "parametric")
+julia> var_parametric = value_at_risk(returns, 0.90, method = "parametric")
 4-element Named Vector{Float64}
 90% parametric VaR  │
 ────────────────────┼───────────
@@ -27,7 +27,7 @@ NFLX                │ -0.0708139
 MSFT                │ -0.0407369
 ```
 """
-function VaR(R::TSFrame, p::Number=0.95; method::String="historical")
+function value_at_risk(R::TSFrame, p::Number=0.95; method::String="historical")
     
     colnames = names(R)
     R = Matrix(R)

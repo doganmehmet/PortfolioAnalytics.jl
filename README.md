@@ -12,10 +12,10 @@ The **PortfolioAnalytics.jl** aims to provide users with functionality for perfo
 Read the [documentation](https://doganmehmet.github.io/PortfolioAnalytics.jl/dev/) to get started with **PortfolioAnalytics.jl**.
 
 The following functions are available in the stable version:
-* Return( )
+* asset_return( )
 * portfolio_return( )
 * sharpe( )
-* VaR( )
+* value_at_risk( )
 * portfolio_optimize( )
 * mean_return( )
 * stddev( )
@@ -93,9 +93,9 @@ weights = [0.4, 0.4, 0.2]
  0.2
 ```
 
-### Return( )
+### asset_return( )
 ```julia
-julia> returns = Return(prices_ts)
+julia> returns = asset_return(prices_ts)
 12×3 TSFrame with Date Index
  Index       TSLA        NFLX        MSFT        
  Date        Float64?    Float64?    Float64?    
@@ -113,7 +113,7 @@ julia> returns = Return(prices_ts)
  2021-11-30   0.0276035  -0.0701279  -0.00310596
  2021-12-31  -0.0768384  -0.0614737   0.0173326
 
-julia> log_returns = Return(prices_ts, method = "log")
+julia> log_returns = asset_return(prices_ts, method = "log")
 12×3 TSFrame with Date Index
  Index       TSLA        NFLX        MSFT        
  Date        Float64?    Float64?    Float64?    
@@ -194,94 +194,87 @@ julia> all_returns = TSFrames.join(returns, preturns)
 
 ### sharpe( )
 ```julia
-julia> sharpe = sharpe(all_returns)
+julia> sharpe = sharpe(returns)
 4-element Named Vector{Float64}
 Sharpe Ratio (Rf=0)  │
 ─────────────────────┼─────────
 TSLA                 │ 0.288602
 NFLX                 │ 0.170242
 MSFT                 │ 0.606824
-PORT                 │ 0.329079
 ```
 
 ### mean_return( )
 ```julia
-julia> mreturn = mean_return(all_returns)
+julia> mreturn = mean_return(returns)
 4-element Named Vector{Float64}
 μ    │
 ─────┼──────────
 TSLA │ 0.0431772
 NFLX │  0.010848
 MSFT │ 0.0366371
-PORT │ 0.0289375
 
 
-julia> mean_return(all_returns, geometric=true)
+julia> mean_return(returns, geometric=true)
 4-element Named Vector{Float64}
 μ    │
 ─────┼───────────
 TSLA │  0.0342267
 NFLX │ 0.00904634
 MSFT │  0.0350585
-PORT │  0.0257348
 ```
 
 ### stddev( )
 ```julia
-julia> stddev(all_returns)
+julia> stddev(returns)
 4-element Named Vector{Float64}
 σ    │
 ─────┼──────────
 TSLA │  0.149608
 NFLX │ 0.0637211
 MSFT │ 0.0603753
-PORT │ 0.0879347
 ```
 
 ### moments( )
 ```julia
-julia> pmoments = moments(all_returns)
+julia> pmoments = moments(returns)
 4×4 Named Matrix{Float64}
 Tickers ╲ Moments │      Mean        Std   Skewness   Kurtosis
 ──────────────────┼───────────────────────────────────────────
 TSLA              │ 0.0431772   0.149608    1.36882    2.19682
 NFLX              │  0.010848  0.0637211   0.604374  -0.808401
 MSFT              │ 0.0366371  0.0603753   0.681468   0.790701
-PORT              │ 0.0289375  0.0879347    1.53379    2.19321
 ```
 
-### VaR( )
+### value_at_risk( )
 ```julia
-julia> var_historical = VaR(all_returns)
+julia> var_historical = value_at_risk(returns)
 4-element Named Vector{Float64}
 95% historical VaR  │
 ────────────────────┼───────────
 TSLA                │  -0.132252
 NFLX                │ -0.0653681
 MSFT                │  -0.035206
-PORT                │ -0.0558624
 
 
-julia> var_parametric = VaR(all_returns, 0.90, method = "parametric")
+
+julia> var_parametric = value_at_risk(returns, 0.90, method = "parametric")
 4-element Named Vector{Float64}
 90% parametric VaR  │
 ────────────────────┼───────────
 TSLA                │  -0.148553
 NFLX                │ -0.0708139
 MSFT                │ -0.0407369
-PORT                │ -0.0837553
 ```
 
 ### es( )
 ```julia
-julia> ES = es(all_returns)
+julia> ES = es(returns)
 4-element Named Vector{Any}
 95% historical ES  │
 ───────────────────┼───────────
 TSLA               │  -0.148766
 NFLX               │ -0.0701279
 MSFT               │  -0.066119
-PORT               │ -0.0577836
 ```
 
 ### portfolio_optimize( )

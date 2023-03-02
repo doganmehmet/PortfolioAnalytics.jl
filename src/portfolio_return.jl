@@ -60,12 +60,12 @@ function portfolio_return(price::TSFrame, weights::Vector{<:Number}; period::Int
     end
     
     if method == "simple"
-        preturns = Matrix(Return(price, period, method=method)) * weights
+        preturns = Matrix(asset_return(price, period, method=method)) * weights
         ts = TSFrame(preturns, TSFrames.index(price)[(period+1):end])
         TSFrames.rename!(ts, [colname])
         return ts
     elseif method == "log"
-        preturns = Matrix(Return(price, period, method=method)) * weights
+        preturns = Matrix(asset_return(price, period, method=method)) * weights
         ts = TSFrame(preturns, TSFrames.index(price)[(period+1):end])
         TSFrames.rename!(ts, [colname])
         return ts

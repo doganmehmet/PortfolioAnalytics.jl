@@ -26,7 +26,7 @@ MSFT               │  -0.066119
 """
 function es(R::TSFrame, p::Number=0.95; method::String="historical")
     
-valueatrisk = vec(VaR(R, p, method = method))
+valueatrisk = vec(value_at_risk(R, p, method = method))
 idx = Matrix(R) .< valueatrisk'
 counts = sum.(skipmissing.(eachcol(idx)))
 

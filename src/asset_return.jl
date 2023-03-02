@@ -1,5 +1,5 @@
 """
-    Return(price::TSFrame, period::Int=1; method::String="simple")
+    asset_return(price::TSFrame, period::Int=1; method::String="simple")
     
 Calculates `returns` form `asset prices`.
 
@@ -11,7 +11,7 @@ Calculates `returns` form `asset prices`.
 
 # Example
 ```julia
-julia> returns = Return(prices_ts)
+julia> returns = asset_return(prices_ts)
 12×3 TSFrame with Date Index
  Index       TSLA        NFLX        MSFT        
  Date        Float64?    Float64?    Float64?    
@@ -30,7 +30,7 @@ julia> returns = Return(prices_ts)
  2021-12-31  -0.0768384  -0.0614737   0.0173326
 
 
- julia> log_returns = Return(prices_ts, method = "log")
+ julia> log_returns = asset_return(prices_ts, method = "log")
 12×3 TSFrame with Date Index
  Index       TSLA        NFLX        MSFT        
  Date        Float64?    Float64?    Float64?    
@@ -52,7 +52,7 @@ julia> returns = Return(prices_ts)
 # Notes:
  * `missing` resulting from the function is automatically removed
 """
-function Return(price::TSFrame, period::Int=1; method::String="simple")
+function asset_return(price::TSFrame, period::Int=1; method::String="simple")
 
     if period <= 0
         throw(ArgumentError("period must be a positive int"))

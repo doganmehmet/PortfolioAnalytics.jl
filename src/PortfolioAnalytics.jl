@@ -11,8 +11,8 @@ using Plots
 using StatsPlots
 
 
-export Return
-include("Return.jl") 
+export asset_return
+include("asset_return.jl") 
 
 export portfolio_return
 include("portfolio_return.jl")
@@ -20,8 +20,8 @@ include("portfolio_return.jl")
 export sharpe
 include("sharpe.jl")
 
-export VaR
-include("VaR.jl")
+export value_at_risk
+include("value_at_risk.jl")
 
 export mean_return
 include("mean_return.jl")

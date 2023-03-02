@@ -5,10 +5,10 @@
 The **PortfolioAnalytics.jl** aims to provide users with functionality for performing quantitative portfolio analytics. The package is under heavy development, and new functionalities will be added as part of ongoing releases.
 
 The following functions are available in stable version:
-* Return( )
+* asset_return( )
 * portfolio_return( )
 * sharpe( )
-* VaR( )
+* value\_at\_risk( )
 * portfolio_optimize( )
 * mean_returns( )
 * stddev( )

@@ -41,7 +41,7 @@ weights = [0.4, 0.4, 0.2]
 ```
 
 ```@docs
-Return
+asset_return
 ```
 
 ```@docs
@@ -78,8 +78,8 @@ mean_return
 
 ```@example
 using NamedArrays# hide
-returns = [0.0431772, 0.010848, 0.0366371, 0.0289375] # hide
-tickers = ["TSLA", "NFLX", "MSFT", "PORT"] # hide
+returns = [0.0431772, 0.010848, 0.0366371] # hide
+tickers = ["TSLA", "NFLX", "MSFT"] # hide
 mreturn = NamedArray(returns, tickers)# hide
 
 using Plots
@@ -96,7 +96,7 @@ moments
 ```
 
 ```@docs
-VaR
+value_at_risk
 ```
 
 ```@docs

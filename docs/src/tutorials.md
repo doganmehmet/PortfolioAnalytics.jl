@@ -62,7 +62,7 @@ Return = \frac{P_t}{P_{t-1}} - 1
 ```
 
 ```@example half-loop
-function Return(price::TSFrame, period::Int=1; method::String="simple") # hide
+function asset_return(price::TSFrame, period::Int=1; method::String="simple") # hide
 
     if period <= 0 # hide
         throw(ArgumentError("period must be a positive int")) # hide
@@ -80,7 +80,7 @@ function Return(price::TSFrame, period::Int=1; method::String="simple") # hide
 
 end # hide
 
-returns = Return(prices_ts)
+returns = asset_return(prices_ts)
 ```
 
 #### Log return
@@ -89,7 +89,7 @@ A *log return* is a way of calculating the rate of return on an investment using
 Return = LN\frac{P_t}{P_{t-1}}
 ```
 ```@example half-loop
-Return(prices_ts, method = "log")
+asset_return(prices_ts, method = "log")
 ```
 
 ## Portfolio Return
@@ -125,12 +125,12 @@ function portfolio_return(price::TSFrame, weights::Vector{<:Number}; period::Int
     end # hide
     
     if method == "simple" # hide
-        preturns = Matrix(Return(price, period, method=method)) * weights # hide
+        preturns = Matrix(asset_return(price, period, method=method)) * weights # hide
         ts = TSFrame(preturns, TSFrames.index(price)[(period+1):end]) # hide
         TSFrames.rename!(ts, [colname]) # hide
         return ts # hide
     elseif method == "log" # hide
-        preturns = Matrix(Return(price, period, method=method)) * weights # hide
+        preturns = Matrix(asset_return(price, period, method=method)) * weights # hide
         ts = TSFrame(preturns, TSFrames.index(price)[(period+1):end]) # hide
         TSFrames.rename!(ts, [colname]) # hide
         return ts # hide
@@ -143,7 +143,7 @@ end # hide
 preturns = portfolio_return(prices_ts, weights)
 ```
 
-Like the *Return( )* function, you can choose the method of return calculation using the **method** argument.
+Like the *asset_return( )* function, you can choose the method of return calculation using the **method** argument.
 ```@example half-loop
 portfolio_return(prices_ts, weights, method = "log")
 ```
@@ -186,12 +186,12 @@ function mean_return(R::TSFrame; geometric::Bool=false) # hide
     return meanReturn # hide
 end # hide
 
-mean_return(all_returns)
+mean_return(returns)
 ```
 
 To calculate the *geometric mean*, set the **geometric** parameter to `true`.
 ```@example half-loop
-mean_return(all_returns, geometric=true)
+mean_return(returns, geometric=true)
 ```
 
 To calculate the standard deviation of asset returns of some period, you can use the **stddev( )** function.
@@ -234,7 +234,7 @@ Where:
 
 As we use monthly returns in our example, we need to multiply them by *12* to annualize.
 ```@example half-loop
-returns_annualized  = mean_return(all_returns) .* 12
+returns_annualized  = mean_return(returns) .* 12
 ```
 
 ###### Annualizing standard deviation
@@ -246,7 +246,7 @@ Where:
 
 We can multiply the result of StdDev by ``\sqrt{12}`` to annualize the standard deviation of monthly returns.
 ```@example half-loop
-std_annualized  = stddev(all_returns) .* sqrt(12)
+std_annualized  = stddev(returns) .* sqrt(12)
 ```
 
 ## Moments
@@ -342,14 +342,14 @@ sharpe_annualized  = sharpe(returns) .* sqrt(12)
 
 There are different methods to calculate VaR, such as *historical*, *variance-covariance*, also known as *parametric*, and *Monte Carlo*.
 
-In PortfolioAnalytics.jl, *Value at Risk* is calculated using the **VaR( )** function. By default, it calculates the *VaR* of asset returns based on the *historical simulation* method at *95%* and expresses it as a *percentage*.
+In PortfolioAnalytics.jl, *Value at Risk* is calculated using the **value_at_risk( )** function. By default, it calculates the *VaR* of asset returns based on the *historical simulation* method at *95%* and expresses it as a *percentage*.
 
 ### Methods for using calculating VaR
 #### 1. Historical method
 The historical simulation does not assume a particular distribution of asset returns. Instead, it involves taking market data for a certain period (e.g., 250 days) and calculating the percentage change over some period (e.g., daily). The *VaR* is then calculated as a percentile of these daily percentage changes (returns).
 
 ```@example half-loop
-function VaR(R::TSFrame, p::Number=0.95; method::String="historical") # hide
+function value_at_risk(R::TSFrame, p::Number=0.95; method::String="historical") # hide
 
     alpha = 1 - p # hide # hide
 
@@ -369,14 +369,14 @@ function VaR(R::TSFrame, p::Number=0.95; method::String="historical") # hide
 end # hide
 
 
-VaR(returns)
+value_at_risk(returns)
 ```
 The output tells us that there is a `5%` chance that our portfolio (*PORT*) will lose more than `5.59%` in a month.
 
 
 We also can specify the confidence level.
 ```@example half-loop
-VaR(returns, 0.90)
+value_at_risk(returns, 0.90)
 ```
 
 
@@ -385,7 +385,7 @@ VaR(returns, 0.90)
 
 To calculate the *parametric VaR*, we need to specify it using the **method** argument.
 ```@example half-loop
-VaR(returns, method = "parametric")
+value_at_risk(returns, method = "parametric")
 ```
 
 #### 3. Monte Carlo Method
@@ -402,7 +402,7 @@ The main difference between *VaR* and *ES* is that *VaR* only considers losses u
 ```@example half-loop
 function es(R::TSFrame, p::Number=0.95; method::String="historical") # hide
     
-    valueatrisk = Vector(VaR(R, p, method = method)) # hide
+    valueatrisk = Vector(value_at_risk(R, p, method = method)) # hide
     idx = Matrix(R) .< valueatrisk' # hide
     counts = sum.(eachcol(idx)) # hide
 
