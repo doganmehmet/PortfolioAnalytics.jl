@@ -24,7 +24,7 @@ using Test
 
     @test round(PortfolioAnalytics.sharpe(prices_ts)["TSLA"], digits = 4) == 4.3921
 
-    @test round(PortfolioAnalytics.mean_return(prices_ts)["TSLA"], digits=4) == 265.9177
+    @test round(PortfolioAnalytics.mean_return(prices_ts, geometric=false)["TSLA"], digits=4) == 265.9177
 
     @test round(PortfolioAnalytics.stddev(prices_ts)["TSLA"], digits=4) == 60.5448
 
@@ -33,6 +33,10 @@ using Test
     @test round(PortfolioAnalytics.portfolio_optimize(prices_ts).prisk, digits=4) == 40.8902
 
     @test round(PortfolioAnalytics.es(prices_ts)["TSLA"], digits=4) == 208.4
+
+    @test round(PortfolioAnalytics.cumulative_return(prices_ts)["TSLA"]*10e-31, digits=4) == 26.5539
+
+    @test round(PortfolioAnalytics.drawdowns(prices_ts)[1, 1], digits=4) == 0.0
 
 
 

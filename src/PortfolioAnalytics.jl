@@ -38,6 +38,11 @@ include("portfolio_optimize.jl")
 export es
 include("es.jl")
 
+export cumulative_return
+include("cumulative_return.jl")
+
+export drawdowns
+include("drawdowns.jl")
 
 
 end

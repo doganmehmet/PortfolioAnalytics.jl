@@ -254,3 +254,12 @@ using Plots
 # plotting optimal weights for maximum sharpe portfolio with 15% return target
 bar(names(opt2.pweights), opt2.pweights, labels = false)
 ```
+
+```@docs
+cumulative_return
+```
+
+```@docs
+drawdowns
+```
+

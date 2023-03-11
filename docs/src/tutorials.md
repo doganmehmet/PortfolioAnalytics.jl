@@ -51,7 +51,7 @@ ylabel!("Price")
 !!! tip
     There is no `dropmissing` function for a `TSFrame` object. However, you can convert your data to `DataFrame`, drop `missing` values, and convert it back to a `TSFrame` object.
 
-## Investment Returns
+## Investment returns
 An investment return is the change in value of an invested vehicle over time. It can be positive (profit) or negative (loss). The total  return includes any additional payments such as dividends, coupon payments etc. and price change, while the nominal return only includes price change. 
 
 In this tutorial, we will use nominal return.
@@ -92,7 +92,7 @@ Return = LN\frac{P_t}{P_{t-1}}
 asset_return(prices_ts, method = "log")
 ```
 
-## Portfolio Return
+## Portfolio return
 A portfolio return refers to how much an investment portfolio gains or loses in a given period. It depends on the expected return and weight of each holding in the portfolio and any dividends or fees involved.
 
 To calculate your portfolio return, you need to know the returns and weights of each asset type. Then, you can use this formula:
@@ -159,19 +159,78 @@ portfolio_return(prices_ts, weights, period = 3, method = "log", colname = "PRET
 all_returns = TSFrames.join(returns, preturns)
 ```
 
+## Cumulative return
+Cumulative return is a measure of how much an investment has gained or lost over time, regardless of the time period involved. It is calculated as a percentage of your original investment. For example, if you invested \$1000 in a stock and it is now worth \$1200, your cumulative return would be 20% (\$200 / \$1000).
+
+Cumulative return can help you evaluate the overall performance of your investment over its entire history.
+
+```@example half-loop
+using NamedArrays # hide
+function cumulative_return(R::TSFrame; geometric::Bool=true, verbose=false) # hide
+
+    colnames = names(R) # hide
+    idx = TSFrames.index(R) # hide
+
+    R = Matrix(R) # hide
+
+    if any(ismissing.(R)) # hide
+        @warn("missing's detected: function may not work in presence of missing's") # hide
+    end # hide
+
+    if geometric == true # hide
+        R1 = R + ones(size(R)) # hide
+        Rprod = last.(cumprod.(Vector{Float64}.(filter.(!ismissing, eachcol(R1))))) # hide
+        if verbose == false # hide
+            creturn = Rprod .- 1 # hide
+            return NamedArray(creturn, colnames, "Cumulative Return") # hide
+        else # hide
+            creturn = cumprod(R1, dims=1) # hide
+            ts = TSFrame(creturn, idx) # hide
+            TSFrames.rename!(ts, colnames) # hide
+            return ts # hide
+        end # hide
+    else # hide
+        if verbose == false # hide
+            creturn = sum.(skipmissing.(eachcol(R))) # hide
+            return NamedArray(creturn, colnames, "Cumulative Return") # hide
+        else # hide
+            creturn = cumsum(R, dims=1) + ones(size(R)) # hide
+            ts = TSFrame(creturn, idx) # hide
+            TSFrames.rename!(ts, colnames) # hide
+            return ts # hide
+        end # hide
+
+    end # hide
+
+
+end # hide
+
+cumulative_return(returns)
+```
+
+By setting `verbose` to `true` you can obtain the historical cumulative return of \$1 investment. This is very useful if you would like to see how much the value of investment changes over time.
+```@example half-loop
+cumulative_return(returns, verbose=true)
+```
+
+```@example half-loop
+using Plots # hide
+creturns = cumulative_return(returns, verbose=true)
+plot(creturns, size = (600, 420))
+title!("Cumulative asset returns")
+xlabel!("Date")
+ylabel!("Cumulative Return")
+```
+
 
 ## Average returns and risk
-You can use the **mean_return( )** function to calculate the average asset returns of some period.
-
-```math
-\mu = \frac{1}{n} \sum_{i=1}^n x_i
-```
+You can use the **mean_return( )** function to calculate the average asset returns over time. Function returns *geometric mean* by default.
 
 ```@example half-loop
 using Statistics # hide
 using NamedArrays # hide
 
-function mean_return(R::TSFrame; geometric::Bool=false) # hide
+function mean_return(R::TSFrame; geometric::Bool=true) # hide
     colnames = names(R) # hide
     R = Matrix(R) # hide
     if geometric == false # hide
@@ -189,9 +248,12 @@ end # hide
 mean_return(returns)
 ```
 
-To calculate the *geometric mean*, set the **geometric** parameter to `true`.
+To calculate the *simple mean*, set the `geometric` parameter to `false`.
+```math
+\mu = \frac{1}{n} \sum_{i=1}^n x_i
+```
 ```@example half-loop
-mean_return(returns, geometric=true)
+mean_return(returns, geometric=false)
 ```
 
 To calculate the standard deviation of asset returns of some period, you can use the **stddev( )** function.
@@ -342,7 +404,7 @@ sharpe_annualized  = sharpe(returns) .* sqrt(12)
 
 There are different methods to calculate VaR, such as *historical*, *variance-covariance*, also known as *parametric*, and *Monte Carlo*.
 
-In PortfolioAnalytics.jl, *Value at Risk* is calculated using the **value_at_risk( )** function. By default, it calculates the *VaR* of asset returns based on the *historical simulation* method at *95%* and expresses it as a *percentage*.
+In PortfolioAnalytics.jl, *Value at Risk* is calculated using the **value\_at\_risk( )** function. By default, it calculates the *VaR* of asset returns based on the *historical simulation* method at *95%* and expresses it as a *percentage*.
 
 ### Methods for using calculating VaR
 #### 1. Historical method
@@ -371,7 +433,7 @@ end # hide
 
 value_at_risk(returns)
 ```
-The output tells us that there is a `5%` chance that our portfolio (*PORT*) will lose more than `5.59%` in a month.
+The output tells us that there is a `5%` chance that *Tesla* stock will lose more than `13.23%` in a month.
 
 
 We also can specify the confidence level.
@@ -424,9 +486,66 @@ end # hide
 es(returns)
 ```
 
-Similar to the *VaR( )* function, we can specify the **confidence level** and **method** of the calculation in the *es( )* function. 
+Similar to the *value\_at\_risk( )* function, we can specify the **confidence level** and **method** of the calculation in the *es( )* function. 
 ```@example half-loop
 es(returns, 0.80, method = "parametric")
+```
+
+## Maximum Drawdown
+*Drawdown* is a measure of how much the value of an asset or portfolio drops from its peak before it recovers back to its peak. It is calculated as a percentage between the peak and the trough. For example, if your account balance was \$10,000 at its peak and then dropped to \$8,000 at its lowest point, your drawdown would be 20% (\$2,000 / \$10,000).
+
+*Maximum drawdown (MDD*) is a measure of how much an investment has lost from its highest peak value to its lowest trough value. It is an indicator of downside risk, with large MDDs suggesting that the investment is volatile and prone to losing value.
+
+MDD can help you compare different investments or trading strategies based on their risk and performance. A lower MDD means a lower risk of losing money and a higher chance of recovering losses. A higher MDD means a higher risk of losing money and a lower chance of recovering losses.
+
+```@example half-loop
+function drawdowns(R::TSFrame; geometric::Bool=true, max_drawdown::Bool=false) # hide
+
+    colnames = names(R) # hide
+    idx = TSFrames.index(R) # hide
+
+    R = Matrix(R) # hide
+
+    if geometric == true # hide
+        R1 = R + ones(size(R)) # hide
+        Rprod = cumprod(R1, dims = 1) # hide
+        maxCumulativeReturns = accumulate(max, Rprod, dims = 1) # hide
+        ddowns = (Rprod ./ maxCumulativeReturns) .- 1 # hide
+
+    else # hide
+        cumulativeSum = cumsum(R, dims = 1) # hide
+        R1 = cumulativeSum + ones(size(R)) # hide
+        first_row = ones(1, size(R)[2]) # hide
+        maxCumulativeReturns = accumulate(max, vcat(first_row, R1), dims = 1)[2:end, :] # hide
+        ddowns = (R1 ./ maxCumulativeReturns) .- 1 # hide
+    
+    end # hide
+
+    if max_drawdown == true # hide
+        max_ddowns = minimum(ddowns, dims=1) # hide
+        return NamedArray(vec(max_ddowns), colnames, "Maximum Drawdown") # hide
+    else # hide
+        ts = TSFrame(ddowns, idx) # hide
+        TSFrames.rename!(ts, colnames) # hide
+        return ts # hide
+    end # hide
+    
+    
+end # hide
+
+drawdowns(returns)
+```
+
+**drawdowns( )** function calculates *drawdowns* from geometric returns by default. To calculate drawdowns from simple returns, set the `geometric=false`.
+
+```@example half-loop
+drawdowns(returns, geometric=false)
+```
+
+You can calculate *maximum drawdown* by setting `max_drawdown` argument to `true`.
+
+```@example half-loop
+drawdowns(returns, max_drawdown=true)
 ```
 
 ## Portfolio Optimization

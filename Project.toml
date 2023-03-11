@@ -1,7 +1,7 @@
 name = "PortfolioAnalytics"
 uuid = "55d897a4-798b-418f-87f2-da98fa5ba518"
 authors = ["Mehmet Dogan"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -19,8 +19,8 @@ Distributions = "0.25.80"
 Ipopt = "1.1.0"
 JuMP = "1.8.2"
 NamedArrays = "0.9.6"
-TSFrames = "0.2.0"
-julia = "1.7"
+TSFrames = "0.2.1"
+julia = "1.6"
 MultiObjectiveAlgorithms = "0.1.4"
 Plots = "1.38.5"
 StatsPlots = "0.15.4"

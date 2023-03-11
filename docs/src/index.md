@@ -14,6 +14,8 @@ The following functions are available in stable version:
 * stddev( )
 * moments( )
 * es( )
+* cumulative_return( )
+* drawdowns( )
 
 This package generally requires return (rather than price) data. Almost all functions will work with any periodicity, from annual, monthly, daily, to even minutes and seconds, either regular or irregular.
 
