@@ -21,7 +21,7 @@ JuMP = "1.8.2"
 NamedArrays = "0.9.6"
 TSFrames = "0.2.1"
 julia = "1.6"
-MultiObjectiveAlgorithms = "0.1.4"
+MultiObjectiveAlgorithms = "0.1.5"
 Plots = "1.38.5"
 StatsPlots = "0.15.4"
 

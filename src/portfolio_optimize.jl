@@ -1,17 +1,17 @@
 """
-    portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0)
+    portfolio_optimize(R::TSFrame, objective::String = "minimum variance"; target = Nothing, Rf::Number = 0)
 
 Calculates the `optimal Portfolio weights` for a given `objective` and `target` return.
 
 # Arguments:
  * `R::TSFrame`: columns of TSFrame object of asset returns
- * `objective::String = "minumum variance"`: portfolio objective, minimizes the standard deviation for the portfolio. Available objecives; `"minumum variance"` and `"maximum sharpe"`
+ * `objective::String = "minimum variance"`: portfolio objective, minimizes the standard deviation for the portfolio. Available objecives; `"minimum variance"` and `"maximum sharpe"`
  * `target = Nothing`: target portfolio mean return for a chosen objective. It allows to move accross the efficient frontier
  * `Rf::Number = 0`: risk-free rate, used with `maximum sharpe`
 
 # Example
 ```julia
-julia> opt1 = portfolio_optimize(returns, "minumum variance")
+julia> opt1 = portfolio_optimize(returns, "minimum variance")
 julia> opt_weights = opt1.pweights
 3-element Named Vector{Float64}
 Optimal Weights  │
@@ -25,9 +25,9 @@ MSFT             │ 0.5562
 julia> opt1.plt
 ```
 
-Optimize minumum-variance portfolio with a minumum return target of 4%
+Optimize minimum-variance portfolio with a minimum return target of 4%
 ```julia
-julia> opt2 = portfolio_optimize(returns, "minumum variance", target = 0.04)
+julia> opt2 = portfolio_optimize(returns, "minimum variance", target = 0.04)
 
 # optimal portfolio weights for a chosen objective and target return
 julia> opt2.pweights
@@ -76,7 +76,7 @@ Named Tuple
   * 7, `po`: list of objective values per portfolio. If the objective is `minimum-variance`, then standard deviations of each optimal portfolio. If the objective is set to the `maximum-sharpe`, then the Sharpe Ratios of each portfolio.
   * 8, `pw`: list of `weights` per each solution
 """
-function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; target = Nothing, Rf::Number = 0)
+function portfolio_optimize(R::TSFrame, objective::String = "minimum variance"; target = Nothing, Rf::Number = 0)
 
     colnames = names(R) # used only for naming array
     R = Matrix(R)
@@ -94,7 +94,7 @@ function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; 
     @expression(model, variance, w' * Q * w)
     @expression(model, expected_return, w' * μ)
      
-    if objective == "minumum variance"
+    if objective == "minimum variance"
         # We want to minimize variance and maximize expected return, but we must pick
         # a single objective sense `Min`, and negate any `Max` objectives:
         @objective(model, Min, [variance, -expected_return])
@@ -104,7 +104,7 @@ function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; 
 
     elseif objective == "maximum sharpe"
         @variable(model, sharpe)
-        @NLconstraint(model, sharpe <= expected_return / sqrt(variance)) 
+        @NLconstraint(model, sharpe == (expected_return-Rf) / sqrt(variance)) 
         
         @objective(model, Max, [expected_return, sharpe])
         if target != Nothing
@@ -126,7 +126,7 @@ function portfolio_optimize(R::TSFrame, objective::String = "minumum variance"; 
     pm = [value(expected_return; result = i) for i in 1:result_count(model)]
     pw = [value.(w; result = i) for i in 1:result_count(model)]
 
-    if objective == "minumum variance"
+    if objective == "minimum variance"
         po = sqrt.([value(variance; result = i) for i in 1:result_count(model)])
         plt_objective = Plots.scatter(
             po,
